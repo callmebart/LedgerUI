@@ -1,17 +1,20 @@
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 /*components*/
- import ButtonNeu from '../components/ButtonNeu';
+import ButtonNeu from '../components/ButtonNeu';
+/*Constants */
+import Colors from '../constants/Colors'
 
 export default function LogInScreen() {
   const navigation = useNavigation();
+
+  const logoURL = require('../assets/logo.png')
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Log In Screen</Text>
-      <Button title="go" onPress={() => navigation.navigate("HomeScreen")} />
-
-      <ButtonNeu />
+      <Image source={logoURL} style={styles.logo}/>
+      <ButtonNeu size={[160, 25]} distance={28} text={"LET'S GO"} onPress={() => navigation.navigate("HomeScreen")} />
     </View>
   );
 }
@@ -21,15 +24,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-   backgroundColor:'#ede5ff',
+    backgroundColor: Colors.background,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  logo:{
+    aspectRatio: 1, 
+    resizeMode: 'contain',
   },
 });
