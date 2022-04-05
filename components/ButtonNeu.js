@@ -28,7 +28,7 @@ const ButtonNeu = () => {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       >
-        <Text style={{color:'lightgrey'}}>Diagonal Gradient</Text>
+        <Text style={{color:'#dce0e8',fontWeight:'bold',fontSize:18}}>CLICK ME</Text>
       </LinearGradient>
       <Shadow
         distance={25}
