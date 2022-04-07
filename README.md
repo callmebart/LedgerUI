@@ -5,7 +5,7 @@
  #### Splash Screen 
 
 
-<img src="https://user-images.githubusercontent.com/62243649/162206032-ffc936ae-9163-4c04-9798-52d90f0f1ac1.png" width="100" height="100">
+<img src="https://user-images.githubusercontent.com/62243649/162206032-ffc936ae-9163-4c04-9798-52d90f0f1ac1.png" width="600" height="1200">
 </br>
 #### LogInScreen
 
