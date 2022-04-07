@@ -15,6 +15,7 @@ type Props = {
   distance:number,
   onPress: (event: GestureResponderEvent) => void
 }
+
 const ButtonNeu = (props:Props) => {
 
   const SIZE = props.size

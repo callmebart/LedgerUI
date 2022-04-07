@@ -28,12 +28,12 @@ export default function Card() {
                 >
                     <Fontisto name="visa" size={30} color="white"  style={{position:'absolute',right:30}}/>
                     <View style={{ marginLeft: 30 }}>
-                        <Text style={{ color: 'white', fontSize: 20 }}>Balance</Text>
-                        <Text style={{ color: 'white', fontSize: 35, marginLeft: 20 }}>320 $</Text>
+                        <Text style={{ color: 'white', fontSize: 22,fontFamily:'Inconsolata' }}>Balance</Text>
+                        <Text style={{ color: 'white', fontSize: 40, marginLeft: 10,fontFamily:'Inconsolata' }}>320.00 $</Text>
                     </View>
                     <View style={{ marginLeft: 30 }}>
-                        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>1337 1234 4000 1234</Text>
-                        <Text style={{ color: 'white', fontSize: 15 }}>07/30</Text>
+                        <Text style={{ color: 'white', fontSize: 25,fontFamily:'Inconsolata-Bold' }}>1337 1234 4000 1234</Text>
+                        <Text style={{ color: 'white', fontSize: 17,fontFamily:'Inconsolata' }}>07/30</Text>
                     </View>
                 </LinearGradient>
                 <Shadow

@@ -9,7 +9,7 @@ import Colors from '../constants/Colors'
 export default function LogInScreen() {
   const navigation = useNavigation();
 
-  const logoURL = require('../assets/logo.png')
+  const logoURL = require('../assets/images/logo.png')
 
   return (
     <View style={styles.container}>
