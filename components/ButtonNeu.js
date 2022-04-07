@@ -14,7 +14,7 @@ const ButtonNeu = (props) => {
   const SIZE = props.size
   const DISTANCE = props.distance
   const TEXT = props.text
-  
+
 
   return (
     <TouchableOpacity onPress={props.onPress} style={styles.container} activeOpacity={.7}>
@@ -50,7 +50,8 @@ export default ButtonNeu
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center', alignItems: 'center'
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   gradient: {
     zIndex: 10,
