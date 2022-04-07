@@ -7,11 +7,16 @@ import Colors from '../constants/Colors';
 
 
 const RADIUS = 20;
-const NeoumorphicBox = ({ children }) => {
+
+type Props = {
+    children: JSX.Element,
+}
+
+const NeoumorphicBox = ({ children }:Props) => {
 
     const WIDTH = children.props.style.width
     const HEIGHT = children.props.style.height
-    const SIZE = [WIDTH-40, 25]
+    const SIZE:[width: number, height: number] = [WIDTH-40, 25]
     const DISTANCE = 28
 
     return (

@@ -1,15 +1,21 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity,GestureResponderEvent } from 'react-native'
 import { Shadow } from 'react-native-shadow-2';
 import { LinearGradient } from 'expo-linear-gradient';
 
 
 /*Button dimmensions*/
-const WIDTH = 200;
-const HEIGHT = 70;
-const RADIUS = 20;
+const WIDTH:number = 200;
+const HEIGHT:number = 70;
+const RADIUS:number = 20;
 
-const ButtonNeu = (props) => {
+type Props = {
+  size:[width: number, height: number],
+  text:string,
+  distance:number,
+  onPress: (event: GestureResponderEvent) => void
+}
+const ButtonNeu = (props:Props) => {
 
   const SIZE = props.size
   const DISTANCE = props.distance

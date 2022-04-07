@@ -5,10 +5,10 @@ import { Shadow } from 'react-native-shadow-2';
 import { Fontisto } from '@expo/vector-icons';
 
 const windowWidth = Dimensions.get('window').width;
-export default function Card(props) {
+export default function Card() {
 
-    const SIZE = [windowWidth - 70, 150]
-    const DISTANCE = 28
+    const SIZE:[width: number, height: number]=[windowWidth - 70, 150]
+    const DISTANCE:number = 28
 
     return (
             <TouchableOpacity onPress={()=>console.log("Press2")} style={{ width: windowWidth - 40, height: 200 }}>
@@ -17,7 +17,7 @@ export default function Card(props) {
                     size={SIZE}
                     startColor={'white'}
                     containerViewStyle={{ marginVertical: 20 }}
-                    offset={[10, -50]}
+                    offset={[0, -40]}
                     radius={1}>
                 </Shadow>
                 <LinearGradient
@@ -52,6 +52,10 @@ const styles = StyleSheet.create({
     gradient: {
         zIndex: 10,
         borderRadius: 20,
+        borderLeftWidth:1,
+        borderTopWidth:1,
+
+        borderColor:'white',
         justifyContent: 'space-evenly',
         width: windowWidth - 40,
         height: 200,
