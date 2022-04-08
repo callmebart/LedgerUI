@@ -15,15 +15,24 @@ const windowWidth = Dimensions.get('window').width;
 export default function HomeScreen() {
   const navigation = useNavigation();
 
+  const boxes = [1, 2, 3]
+  const renderBoxes = boxes.map((item,index) => {
+    return (
+      <NeoumorphicBox>
+        <TouchableOpacity key={index} onPress={() => console.log("pres1")} style={{ width: 90, height: 90, borderRadius: 20 }} />
+      </NeoumorphicBox>
+    )
+  })
+
   return (
 
     <View style={styles.container}>
       <SafeAreaView >
-        <View style={{ flex: 1, marginTop: 30 }}>
+        <View style={{ flex: 1, marginTop: 30}}>
           <NeoumorphicBox>
             <View style={{ flexDirection: 'row', width: windowWidth - 40, height: 70, justifyContent: 'space-between', alignItems: 'center', borderRadius: 20 }}>
               <Text style={styles.title}>Welcome Bart!</Text>
-              <TouchableOpacity style={{ marginRight: 20 }}>
+              <TouchableOpacity style={{ width: 70,height:70, zIndex: 2,justifyContent:'center',alignItems:'center'}} onPress={() => console.log("menu")} >
                 <Ionicons name="menu" size={28} color={Colors.headerTextColor} />
               </TouchableOpacity>
             </View>
@@ -40,15 +49,7 @@ export default function HomeScreen() {
           </View>
 
           <View style={{ flexDirection: 'row', flex: 3, justifyContent: 'space-between', width: windowWidth - 80 }}>
-            <NeoumorphicBox>
-              <TouchableOpacity onPress={() => console.log("pres1")} style={{ width: 90, height: 90, borderRadius: 20 }} />
-            </NeoumorphicBox>
-            <NeoumorphicBox>
-              <TouchableOpacity onPress={() => console.log("pres2")} style={{ width: 90, height: 90, borderRadius: 20 }} />
-            </NeoumorphicBox>
-            <NeoumorphicBox>
-              <TouchableOpacity onPress={() => console.log("pres3")} style={{ width: 90, height: 90, borderRadius: 20 }} />
-            </NeoumorphicBox>
+              {renderBoxes}
           </View>
 
         </View>
