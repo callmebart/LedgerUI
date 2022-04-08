@@ -40,7 +40,7 @@ export default function HomeScreen() {
         </View>
         <View style={styles.content}>
 
-          <View style={{ flex: 2.2 }}>
+          <View style={{ flex: 2.1 }}>
             <NeoumorphicBox>
               <TouchableOpacity onPress={() => console.log("pres")} style={{ width: windowWidth - 40, height: 200, borderRadius: 15 }} activeOpacity={.6}>
                 <Card width={200} height={200} />
@@ -48,10 +48,17 @@ export default function HomeScreen() {
             </NeoumorphicBox>
           </View>
 
-          <View style={{ flexDirection: 'row', flex: 3, justifyContent: 'space-between', width: windowWidth - 80 }}>
+          <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between', width: windowWidth - 80 }}>
               {renderBoxes}
           </View>
 
+          <View style={{ flex: 2 }}>
+            <NeoumorphicBox>
+              <TouchableOpacity onPress={() => console.log("pres")} style={{ width: windowWidth - 40, height: 200, borderRadius: 15,justifyContent:'center',alignItems:'center' }} activeOpacity={.6}>
+                <Text>Place for current exopences</Text>
+              </TouchableOpacity>
+            </NeoumorphicBox>
+          </View>
         </View>
 
       </SafeAreaView >
