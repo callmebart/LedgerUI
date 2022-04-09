@@ -17,7 +17,7 @@ LogInScreen
 </br>
 HomeScreen
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/62243649/162587689-eae8443a-2262-44ee-af77-068b9eede3ff.png " width="600" height="1200">
+    <img src="https://user-images.githubusercontent.com/62243649/162587919-935e580b-1cc8-49aa-aef3-d5771c913dcf.png " width="600" height="1200">
 </p>
 
 
