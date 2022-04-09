@@ -33,7 +33,7 @@ export default function BezierLinrChart() {
         // chart desc 
         height={200}
         yAxisLabel="$"
-        yAxisSuffix="k"
+        //yAxisSuffix="k"
         yAxisInterval={1} // optional, defaults to 1
 
         //dashed lines on the chart 
@@ -47,7 +47,7 @@ export default function BezierLinrChart() {
           backgroundGradientFrom: "rgb(229,229,234)",
           backgroundGradientTo: "white",
           decimalPlaces: 2, // optional, defaults to 2dp
-          fillShadowGradientFrom:'#db99e8',
+          fillShadowGradientFrom:'#d024ff',
           fillShadowGradientTo:'white',
 
           color: (opacity = 0.5) => `rgba(0, 0, 0, ${opacity})`, //line path color 
@@ -59,7 +59,7 @@ export default function BezierLinrChart() {
           propsForDots: {
             r: "5",
             strokeWidth: "3",
-            stroke: "#db99e8",
+            stroke: "#bfa8ff",
             
           }
         }}
