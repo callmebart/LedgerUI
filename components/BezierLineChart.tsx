@@ -18,12 +18,12 @@ export default function BezierLinrChart() {
           datasets: [
             {
               data: [
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100
+                78.9154453641313,
+                55.801418107319066,
+                38.87651924368301,
+                55.26893894458558,
+                85.56881030053083,
+                34.90820912436362
               ]
             }
           ]

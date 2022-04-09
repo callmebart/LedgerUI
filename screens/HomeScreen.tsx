@@ -1,9 +1,11 @@
-import { StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
+import { useRef } from 'react'
+import { StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity, Switch } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-
+/*Themes and colors*/
 import Colors from '../constants/Colors';
-import { Ionicons } from '@expo/vector-icons';
+
+/*Icons*/
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -34,20 +36,22 @@ const windowWidth = Dimensions.get('window').width;
 export default function HomeScreen() {
   const navigation = useNavigation();
 
-
-
-  const boxes = [
+  //rendering buttons for :
+  //adding new card 
+  //make new transaction
+  //take a look at current investments
+  const boxes: any[] = [
     "add",
-    'payment',
-    'piggy-bank'
+    "payment",
+    "piggy-bank"
   ]
   const renderBoxes = boxes.map((item, index) => {
     return (
       <NeoumorphicBox>
         <TouchableOpacity key={index} onPress={() => console.log({ item })} style={{ width: 90, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }} >
           {
-            item == 'piggy-bank' ?
-              <FontAwesome5 name="piggy-bank" size={28} color="rgba(0,0,0,0.3)" />
+            item == 'piggy-bank'
+              ? <FontAwesome5 name="piggy-bank" size={28} color="rgba(0,0,0,0.3)" />
               : <MaterialIcons name={item} size={30} color="rgba(0,0,0,0.3)" />
           }
         </TouchableOpacity>
@@ -69,15 +73,31 @@ export default function HomeScreen() {
       transform: [{ rotateZ: '' + rotateIcon.value + 'deg' }]
     }
   })
+
+  const animatedIndex = useSharedValue(0)
+  const animatedIndexStyle = useAnimatedStyle(() => {
+    return {
+      zIndex: animatedIndex.value,
+      opacity: animatedIndex.value
+    }
+  })
+
   
+
   const animateMenu = () => {
-    rotateIcon.value == 180
+    rotateIcon.value === 180 && menuHeight.value === 295
       ? rotateIcon.value = withTiming(0, { duration: 500 })
       : rotateIcon.value = rotateIcon.value = withTiming(180, { duration: 500 })
 
-    menuHeight.value == 295 ? menuHeight.value = withSpring(70) : menuHeight.value = withSpring(295)
+    menuHeight.value === 295 ? menuHeight.value = withSpring(70) : menuHeight.value = withSpring(295)
+
+    animatedIndex.value === 0 
+    ? animatedIndex.value = withTiming(1, { duration: 300 })
+    : animatedIndex.value = 0
   }
 
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   return (
 
     <View style={styles.container}>
@@ -98,6 +118,20 @@ export default function HomeScreen() {
                 </TouchableOpacity>
               </View>
             </NeoumorphicBox>
+            <Animated.View style={[animatedIndexStyle]}>
+              <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                <Text>Dark theme </Text>
+                <Switch
+                  trackColor={{ false: "#767577", true: "#81b0ff" }}
+                  thumbColor={ "#f4f3f4"}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={toggleSwitch}
+                  value={isEnabled}
+                />
+              </View>
+
+            </Animated.View>
+
           </Animated.View>
 
         </View>
@@ -138,7 +172,8 @@ const styles = StyleSheet.create({
   },
   header: {
     zIndex: 20,
-    backgroundColor: Colors.background,
+    justifyContent: 'space-between',
+    backgroundColor: 'rgba(229,229,234,0.98)',
     width: windowWidth - 40,
     borderRadius: 20,
   },
