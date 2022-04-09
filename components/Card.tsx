@@ -19,7 +19,7 @@ export default function Card(props: Props) {
             style={{ ...styles.gradient }}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-        >
+>
             <Fontisto name="visa" size={30} color="white" style={{ position: 'absolute', right: 35 }} />
             <View style={{ marginLeft: 30 }}>
                 <Text style={{ color: 'white', fontSize: 22, fontFamily: 'Inconsolata' }}>Balance</Text>
