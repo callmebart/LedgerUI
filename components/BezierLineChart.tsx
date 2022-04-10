@@ -1,14 +1,39 @@
 import { View, Text, Dimensions } from 'react-native'
-import React from 'react'
+import React ,{useState,useEffect}from 'react'
 
 import {
   LineChart,
 } from "react-native-chart-kit";
 
+import Colors from '../constants/Colors';
+import { ThemeContext, useTheme } from '../hooks/ThemeProvider';
+import { Theme } from '../types';
+
 export default function BezierLinrChart() {
 
-  //TODO:
-  // make on data point click
+  const { theme, setTheme } = useTheme()
+  const [gradient1Color, setGradient1Color] = useState(Colors.light.neuGradientFirstColor)
+  const [gradient2Color,setGradient2Color] = useState(Colors.light.neuGradientSecondColor)
+
+  const [pathLineColor,setPathLineColor] = useState(Colors.light.pathLineColor)
+ // const [shadow1,setShadow1] = useState(Colors.light.shadow1)
+  //const [shadow2,setShadow2] = useState(Colors.light.shadow2)
+
+  useEffect(() => {
+      if (theme == 'light') {
+          setGradient1Color(Colors.light.neuGradientFirstColor)
+          setGradient2Color(Colors.light.neuGradientSecondColor)
+          setPathLineColor(Colors.light.pathLineColor)
+
+      }else{
+          setGradient1Color(Colors.dark.neuGradientFirstColor)
+          setGradient2Color(Colors.dark.neuGradientSecondColor)
+          setPathLineColor(Colors.dark.pathLineColor)
+  
+      }
+  }, [theme])
+
+
 
   return (
     <View>
@@ -44,14 +69,14 @@ export default function BezierLinrChart() {
         
         chartConfig={{
         
-          backgroundGradientFrom: "rgb(229,229,234)",
-          backgroundGradientTo: "white",
+          backgroundGradientFrom: gradient1Color,
+          backgroundGradientTo:gradient2Color,
           decimalPlaces: 2, // optional, defaults to 2dp
           fillShadowGradientFrom:'#d024ff',
           fillShadowGradientTo:'white',
 
-          color: (opacity = 0.5) => `rgba(0, 0, 0, ${opacity})`, //line path color 
-          labelColor: (opacity = 0.2) => `rgba(0, 0, 0, ${opacity})`,
+          color: () => pathLineColor, //line path color 
+          labelColor: () => pathLineColor,
 
           style: {
             borderRadius: 15

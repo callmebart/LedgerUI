@@ -34,6 +34,38 @@ const windowWidth = Dimensions.get('window').width;
 export default function HomeScreen() {
   const navigation = useNavigation();
 
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+  const { theme, setTheme } = useTheme()
+  const setNavigationBarColor = async (value:Theme) => {
+    const color = await NavigationBar.setBackgroundColorAsync(themeMode[value].backgroundColor);
+  }
+
+  const themeMode: any = StyleSheet.create({
+    light: {
+      backgroundColor: Colors.light.backgroundColor,
+      color:'black'
+    },
+    dark: {
+      backgroundColor: Colors.dark.backgroundColor,
+      color:'rgba(255, 255, 255,0.3)'
+    },
+  })
+
+  useEffect(() => {
+    if (isEnabled){
+      setTheme(Theme.dark)
+      setNavigationBarColor(Theme.dark)
+    }     
+    else{
+      setTheme(Theme.light)
+      setNavigationBarColor(Theme.light)
+    } 
+
+  }, [isEnabled])
+
+
   //rendering buttons for :
   //adding new card 
   //make new transaction
@@ -96,35 +128,6 @@ export default function HomeScreen() {
       : animatedIndex.value = 0
   }
 
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-
-  const { theme, setTheme } = useTheme()
-  const setNavigationBarColor = async (value:Theme) => {
-    const color = await NavigationBar.setBackgroundColorAsync(themeMode[value].backgroundColor);
-  }
-
-
-  useEffect(() => {
-    if (isEnabled){
-      setTheme(Theme.dark)
-      setNavigationBarColor(Theme.dark)
-    }     
-    else{
-      setTheme(Theme.light)
-      setNavigationBarColor(Theme.light)
-    } 
-
-  }, [isEnabled])
-
-  const themeMode: any = StyleSheet.create({
-    light: {
-      backgroundColor: Colors.light.backgroundColor
-    },
-    dark: {
-      backgroundColor: Colors.dark.backgroundColor,
-    },
-  })
 
   return (
     <View style={[styles.container, themeMode[theme]]}>
@@ -147,7 +150,7 @@ export default function HomeScreen() {
             </NeoumorphicBox>
             <Animated.View style={[animatedIndexStyle]}>
               <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-                <Text>Dark theme </Text>
+                <Text style={themeMode[theme]}>Dark theme </Text>
                 <Switch
                   trackColor={{ false: "#767577", true: "#81b0ff" }}
                   thumbColor={"#f4f3f4"}

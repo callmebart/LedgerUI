@@ -21,7 +21,6 @@ const NeoumorphicSquare = ({ children }: Props) => {
     const [shadow1,setShadow1] = useState(Colors.light.shadow1)
     const [shadow2,setShadow2] = useState(Colors.light.shadow2)
 
-    console.log("neutheme:",theme)
     useEffect(() => {
         if (theme == 'light') {
             setGradient1Color(Colors.light.neuGradientFirstColor)
