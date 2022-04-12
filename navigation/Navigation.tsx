@@ -8,6 +8,7 @@ import { RootStackParamList } from '../types';
 import HomeScreen from '../screens/HomeScreen';
 import LogInScreen from '../screens/LogInScreen';
 
+/*THEME */
 import { ThemeContext } from '../hooks/ThemeProvider';
 import { Theme } from '../types'
 

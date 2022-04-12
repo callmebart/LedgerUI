@@ -2,17 +2,17 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 
 declare global {
-    namespace ReactNavigation {
-      interface RootParamList extends RootStackParamList {}
-    }
+  namespace ReactNavigation {
+    interface RootParamList extends RootStackParamList { }
   }
-
-export type RootStackParamList = {
-    HomeScreen: undefined;
-    LogInScreen: undefined;
 }
 
-export type Props = NativeStackScreenProps<RootStackParamList,'HomeScreen'>
+export type RootStackParamList = {
+  HomeScreen: undefined;
+  LogInScreen: undefined;
+}
+
+export type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>
 
 
 export enum Theme {
@@ -20,6 +20,6 @@ export enum Theme {
   light = 'light',
 }
 export type ThemeContextType = {
-  theme:Theme;
-  setTheme: (Theme: Theme) => void 
+  theme: Theme;
+  setTheme: (Theme: Theme) => void
 }

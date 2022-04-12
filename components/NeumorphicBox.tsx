@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { Shadow } from 'react-native-shadow-2';
 import { LinearGradient } from 'expo-linear-gradient';
 
+/*Colors / THEME */
 import Colors from '../constants/Colors';
+import { themeMode } from '../constants/themeMode';
 import { ThemeContext, useTheme } from '../hooks/ThemeProvider';
 import { Theme } from '../types';
 
@@ -16,10 +18,10 @@ const NeoumorphicSquare = ({ children }: Props) => {
 
     const { theme, setTheme } = useTheme()
     const [gradient1Color, setGradient1Color] = useState(Colors.light.neuGradientFirstColor)
-    const [gradient2Color,setGradient2Color] = useState(Colors.light.neuGradientSecondColor)
+    const [gradient2Color, setGradient2Color] = useState(Colors.light.neuGradientSecondColor)
 
-    const [shadow1,setShadow1] = useState(Colors.light.shadow1)
-    const [shadow2,setShadow2] = useState(Colors.light.shadow2)
+    const [shadow1, setShadow1] = useState(Colors.light.shadow1)
+    const [shadow2, setShadow2] = useState(Colors.light.shadow2)
 
     useEffect(() => {
         if (theme == 'light') {
@@ -27,7 +29,7 @@ const NeoumorphicSquare = ({ children }: Props) => {
             setGradient2Color(Colors.light.neuGradientSecondColor)
             setShadow1(Colors.light.shadow1)
             setShadow2(Colors.light.shadow2)
-        }else{
+        } else {
             setGradient1Color(Colors.dark.neuGradientFirstColor)
             setGradient2Color(Colors.dark.neuGradientSecondColor)
             setShadow1(Colors.dark.shadow1)
@@ -58,7 +60,7 @@ const NeoumorphicSquare = ({ children }: Props) => {
                 radius={2}
             >
                 <LinearGradient
-                    colors={[gradient1Color,gradient2Color]}
+                    colors={[gradient1Color, gradient2Color]}
                     style={{ ...styles.gradient, width: WIDTH, height: HEIGHT, borderRadius: RADIUS }}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}

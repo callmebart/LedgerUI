@@ -1,10 +1,21 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity, Switch } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
 
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+
+} from 'react-native-reanimated';
+
 /*Themes and colors*/
 import Colors from '../constants/Colors';
+import { themeMode } from '../constants/themeMode';
+import { ThemeContext, useTheme } from '../hooks/ThemeProvider';
+import { Theme } from '../types';
 
 /*Icons*/
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -15,20 +26,6 @@ import NeoumorphicBox from '../components/NeumorphicBox';
 import Card from '../components/Card';
 import BezierLineChart from '../components/BezierLineChart';
 
-import { TapGestureHandler, PanGestureHandler, GestureHandlerRootView } from 'react-native-gesture-handler';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-  withTiming,
-
-} from 'react-native-reanimated';
-import { useState } from 'react';
-
-
-import { ThemeContext, useTheme } from '../hooks/ThemeProvider';
-import { Theme } from '../types';
-
 const windowWidth = Dimensions.get('window').width;
 
 export default function HomeScreen() {
@@ -38,45 +35,31 @@ export default function HomeScreen() {
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   const { theme, setTheme } = useTheme()
-  const setNavigationBarColor = async (value:Theme) => {
+  const setNavigationBarColor = async (value: Theme) => {
     const color = await NavigationBar.setBackgroundColorAsync(themeMode[value].backgroundColor);
   }
 
-  const themeMode: any = StyleSheet.create({
-    light: {
-      backgroundColor: Colors.light.backgroundColor,
-      color:'black'
-    },
-    dark: {
-      backgroundColor: Colors.dark.backgroundColor,
-      color:'rgba(255, 255, 255,0.3)'
-    },
-  })
+
 
   useEffect(() => {
-    if (isEnabled){
+    if (isEnabled) {
       setTheme(Theme.dark)
       setNavigationBarColor(Theme.dark)
-    }     
-    else{
+    }
+    else {
       setTheme(Theme.light)
       setNavigationBarColor(Theme.light)
-    } 
+    }
 
   }, [isEnabled])
 
-
-  //rendering buttons for :
-  //adding new card 
-  //make new transaction
-  //take a look at current investments
+  //RENDERING BUTTONS 
   const boxes: any[] = [
     "add",
     "payment",
     "piggy-bank"
   ]
   const renderBoxes = boxes.map((item, index) => {
-    //const color = theme == 'light' ? "rgba(0,0,0,0.3)" : "rgba(255,255,255,0.25)"
     const color = '#9f9f9f'
     return (
       <NeoumorphicBox>
@@ -91,18 +74,11 @@ export default function HomeScreen() {
     )
   })
 
-  //header menu animation
+  //HEADER PROPERTIES SHEET ANIMATION
   const menuHeight = useSharedValue(70);
   const animatedStyles = useAnimatedStyle(() => {
     return {
       height: menuHeight.value
-    }
-  })
-
-  const rotateIcon = useSharedValue(0)
-  const animatedIcon = useAnimatedStyle(() => {
-    return {
-      transform: [{ rotateZ: '' + rotateIcon.value + 'deg' }]
     }
   })
 
@@ -114,7 +90,13 @@ export default function HomeScreen() {
     }
   })
 
-
+  //HEADER ICON ANIMATION
+  const rotateIcon = useSharedValue(0)
+  const animatedIcon = useAnimatedStyle(() => {
+    return {
+      transform: [{ rotateZ: '' + rotateIcon.value + 'deg' }]
+    }
+  })
 
   const animateMenu = () => {
     rotateIcon.value === 180 && menuHeight.value === 295
@@ -150,7 +132,7 @@ export default function HomeScreen() {
             </NeoumorphicBox>
             <Animated.View style={[animatedIndexStyle]}>
               <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-                <Text style={themeMode[theme]}>Dark theme </Text>
+                <Text style={{ color: '#9f9f9f' }}>Dark theme </Text>
                 <Switch
                   trackColor={{ false: "#767577", true: "#81b0ff" }}
                   thumbColor={"#f4f3f4"}
