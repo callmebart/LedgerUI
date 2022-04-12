@@ -7,6 +7,7 @@ import { RootStackParamList } from '../types';
 /*Screens*/
 import HomeScreen from '../screens/HomeScreen';
 import LogInScreen from '../screens/LogInScreen';
+import InvestmentsScreen from '../screens/InvestmentsScreen';
 
 /*THEME */
 import { ThemeContext } from '../hooks/ThemeProvider';
@@ -14,13 +15,13 @@ import { Theme } from '../types'
 
 export default function Navigation() {
 
-    const [theme,setTheme] = React.useState(Theme.light)
+    const [theme, setTheme] = React.useState(Theme.light)
 
     return (
-        <ThemeContext.Provider value={{theme,setTheme}}>
-        <NavigationContainer>
-            <RootStackNavigator />
-        </NavigationContainer>
+        <ThemeContext.Provider value={{ theme, setTheme }}>
+            <NavigationContainer>
+                <RootStackNavigator />
+            </NavigationContainer>
         </ThemeContext.Provider>
     );
 }
@@ -33,6 +34,7 @@ function RootStackNavigator() {
         }}>
             <Stack.Screen name="LogInScreen" component={LogInScreen} />
             <Stack.Screen name="HomeScreen" component={HomeScreen} />
+            <Stack.Screen name="InvestmentsScreen" component={InvestmentsScreen} />
 
         </Stack.Navigator>
     )

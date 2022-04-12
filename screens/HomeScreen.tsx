@@ -55,22 +55,24 @@ export default function HomeScreen() {
 
   //RENDERING BUTTONS 
   const boxes: any[] = [
-    "add",
-    "payment",
-    "piggy-bank"
+    { iconName: "add", screen: 'HomeScreen' },
+    { iconName: "payment", screen: 'LogInScreen' },
+    { iconName: "piggy-bank", screen: "InvestmentsScreen" },
   ]
   const renderBoxes = boxes.map((item, index) => {
     const color = '#9f9f9f'
     return (
+      <View key={index}>
       <NeoumorphicBox>
-        <TouchableOpacity key={index} onPress={() => console.log({ item })} style={{ width: 90, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }} >
+        <TouchableOpacity  onPress={() => navigation.navigate(item.screen)} style={{ width: 90, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }} >
           {
-            item == 'piggy-bank'
+            item.iconName == "piggy-bank"
               ? <FontAwesome5 name="piggy-bank" size={28} color={color} />
-              : <MaterialIcons name={item} size={30} color={color} />
+              : <MaterialIcons name={item.iconName} size={30} color={color} />
           }
         </TouchableOpacity>
       </NeoumorphicBox>
+      </View>
     )
   })
 
