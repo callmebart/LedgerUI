@@ -17,8 +17,13 @@ LogInScreen
 </br>
 HomeScreen
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/62243649/162958375-c3b8b82f-71f5-4927-bbb3-0cce17655b0e.png " width="600" height="1200">
+    <img src="https://user-images.githubusercontent.com/62243649/162958348-aefc7567-e9d5-4357-bf16-d120827667a8.png " width="600" height="1200">
 </p>
-
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/62243649/162958394-d76329e0-4222-4fc8-9023-ab78b5db3bf5.png" width="600" height="1200">
+</p>
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/62243649/162958375-c3b8b82f-71f5-4927-bbb3-0cce17655b0e.png" width="600" height="1200">
+</p>
 
 
