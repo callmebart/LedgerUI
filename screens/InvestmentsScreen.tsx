@@ -19,14 +19,14 @@ import { themeMode } from '../constants/themeMode';
 /*Components*/
 import NeoumorphicBox from '../components/NeumorphicBox';
 
+import { MaterialIcons } from '@expo/vector-icons';
+
 const windowWidth = Dimensions.get('window').width
 
 export default function InvestmentsScreen() {
 
     const navigation = useNavigation();
     const { theme, setTheme } = useTheme()
-
-
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
@@ -35,12 +35,25 @@ export default function InvestmentsScreen() {
                     <NeoumorphicBox>
                         <View style={{ width: windowWidth - 40, height: 70, borderRadius: 20, justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={styles.title}>Investments</Text>
+                            <TouchableOpacity style={{ width: 100, height: 70, zIndex: 2, justifyContent: 'center', alignItems: 'center' }}
+                                onPress={() => navigation.goBack()}
+                            >
+                                <MaterialIcons name="keyboard-arrow-down" size={40} color={Colors.headerTextColor} style={{transform:[{
+                                    rotateZ:`${90}deg`
+                                }]}}/>
+
+                            </TouchableOpacity>
                         </View>
                     </NeoumorphicBox>
                 </View>
                 <View style={styles.content}>
-                    <Text style={styles.h2Title}>Total portfolio value</Text>
-                    <AnimatedLineChart />
+                    <NeoumorphicBox>
+                        <View style={{ width: windowWidth - 40, height: 260, borderRadius: 20 }}>
+                            <Text style={styles.h2Title}>Portfolio</Text>
+                            <AnimatedLineChart />
+                        </View>
+                    </NeoumorphicBox>
+
                 </View>
             </SafeAreaView>
         </GestureHandlerRootView>
@@ -66,11 +79,12 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         width: windowWidth - 40,
-        backgroundColor:'yellow'
     },
     h2Title: {
         color: Colors.basicTextGrey,
         fontSize: 16,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        paddingHorizontal: 10,
+        paddingTop: 10,
     },
 });

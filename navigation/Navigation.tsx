@@ -2,6 +2,7 @@ import * as React from 'react';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+
 /*types for navigation definition*/
 import { RootStackParamList } from '../types';
 /*Screens*/
@@ -12,6 +13,7 @@ import InvestmentsScreen from '../screens/InvestmentsScreen';
 /*THEME */
 import { ThemeContext } from '../hooks/ThemeProvider';
 import { Theme } from '../types'
+
 
 export default function Navigation() {
 
@@ -30,7 +32,9 @@ const Stack = createNativeStackNavigator<RootStackParamList>()
 function RootStackNavigator() {
     return (
         <Stack.Navigator screenOptions={{
-            headerShown: false
+            headerShown: false,
+            animation:'slide_from_right',
+            gestureEnabled: true,
         }}>
             <Stack.Screen name="LogInScreen" component={LogInScreen} />
             <Stack.Screen name="HomeScreen" component={HomeScreen} />
