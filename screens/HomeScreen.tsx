@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity, Switch } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity, Switch, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
 
@@ -38,7 +38,6 @@ export default function HomeScreen() {
   const setNavigationBarColor = async (value: Theme) => {
     const color = await NavigationBar.setBackgroundColorAsync(themeMode[value].backgroundColor);
   }
-
 
 
   useEffect(() => {
@@ -100,6 +99,8 @@ export default function HomeScreen() {
     }
   })
 
+
+
   const animateMenu = () => {
     rotateIcon.value === 180 && menuHeight.value === 295
       ? rotateIcon.value = withTiming(0, { duration: 500 })
@@ -123,7 +124,7 @@ export default function HomeScreen() {
               <View style={{ width: windowWidth - 40, height: 70, borderRadius: 20, justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
                 <Text style={styles.title}>Welcome Bart!</Text>
                 <TouchableOpacity style={{ width: 100, height: 70, zIndex: 2, justifyContent: 'center', alignItems: 'center' }}
-                  onPress={() => animateMenu()}
+                  onPress={() => menuHeight.value === 295 || menuHeight.value === 70? animateMenu():{}}
                 >
                   <Animated.View style={[animatedIcon]}>
                     <MaterialIcons name="keyboard-arrow-down" size={40} color={Colors.headerTextColor} />
