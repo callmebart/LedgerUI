@@ -55,8 +55,8 @@ export default function HomeScreen() {
 
   //RENDERING BUTTONS 
   const boxes: any[] = [
-    { iconName: "add", screen: 'HomeScreen' },
-    { iconName: "payment", screen: 'LogInScreen' },
+    { iconName: "add", screen: 'AddNewCardScreen' },
+    { iconName: "payment", screen: 'PaymentsScreen' },
     { iconName: "piggy-bank", screen: "InvestmentsScreen" },
   ]
   const renderBoxes = boxes.map((item, index) => {

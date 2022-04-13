@@ -9,6 +9,8 @@ import { RootStackParamList } from '../types';
 import HomeScreen from '../screens/HomeScreen';
 import LogInScreen from '../screens/LogInScreen';
 import InvestmentsScreen from '../screens/InvestmentsScreen';
+import AddNewCardScreen from '../screens/AddNewCardScreen';
+import PaymentsScreen from '../screens/PaymentsScreen';
 
 /*THEME */
 import { ThemeContext } from '../hooks/ThemeProvider';
@@ -39,6 +41,8 @@ function RootStackNavigator() {
             <Stack.Screen name="LogInScreen" component={LogInScreen} />
             <Stack.Screen name="HomeScreen" component={HomeScreen} />
             <Stack.Screen name="InvestmentsScreen" component={InvestmentsScreen} />
+            <Stack.Screen name="AddNewCardScreen" component={AddNewCardScreen}/>
+            <Stack.Screen name="PaymentsScreen" component={PaymentsScreen}/>
 
         </Stack.Navigator>
     )
