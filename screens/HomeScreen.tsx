@@ -8,7 +8,7 @@ import Animated, {
   useSharedValue,
   withSpring,
   withTiming,
-
+  cancelAnimation
 } from 'react-native-reanimated';
 
 /*Themes and colors*/
@@ -25,6 +25,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import NeoumorphicBox from '../components/NeumorphicBox';
 import Card from '../components/Card';
 import BezierLineChart from '../components/BezierLineChart';
+
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -62,15 +63,15 @@ export default function HomeScreen() {
     const color = '#9f9f9f'
     return (
       <View key={index}>
-      <NeoumorphicBox>
-        <TouchableOpacity  onPress={() => navigation.navigate(item.screen)} style={{ width: 90, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }} >
-          {
-            item.iconName == "piggy-bank"
-              ? <FontAwesome5 name="piggy-bank" size={28} color={color} />
-              : <MaterialIcons name={item.iconName} size={30} color={color} />
-          }
-        </TouchableOpacity>
-      </NeoumorphicBox>
+        <NeoumorphicBox>
+          <TouchableOpacity onPress={() => navigation.navigate(item.screen)} style={{ width: 90, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }} >
+            {
+              item.iconName == "piggy-bank"
+                ? <FontAwesome5 name="piggy-bank" size={28} color={color} />
+                : <MaterialIcons name={item.iconName} size={30} color={color} />
+            }
+          </TouchableOpacity>
+        </NeoumorphicBox>
       </View>
     )
   })
@@ -87,9 +88,13 @@ export default function HomeScreen() {
   const animatedIndexStyle = useAnimatedStyle(() => {
     return {
       zIndex: animatedIndex.value,
-      opacity: animatedIndex.value
+      opacity: animatedIndex.value,
+      transform: [{ scale: animatedIndex.value }],
+      display: animatedIndex.value==0? 'none' : 'flex'
     }
   })
+
+
 
   //HEADER ICON ANIMATION
   const rotateIcon = useSharedValue(0)
@@ -100,17 +105,19 @@ export default function HomeScreen() {
   })
 
 
-
   const animateMenu = () => {
+    
     rotateIcon.value === 180 && menuHeight.value === 295
-      ? rotateIcon.value = withTiming(0, { duration: 500 })
-      : rotateIcon.value = rotateIcon.value = withTiming(180, { duration: 500 })
+      ? rotateIcon.value = withTiming(0, { duration: 400 })
+      : rotateIcon.value = rotateIcon.value = withTiming(180, { duration: 400 })
 
-    menuHeight.value === 295 ? menuHeight.value = withSpring(70) : menuHeight.value = withSpring(295)
+    menuHeight.value === 295 
+    ? menuHeight.value =  withTiming(70, { duration: 300 }) 
+    : menuHeight.value =  withTiming(295, { duration: 300 })
 
     animatedIndex.value === 0
       ? animatedIndex.value = withTiming(1, { duration: 300 })
-      : animatedIndex.value = 0
+      : animatedIndex.value = 0  
   }
 
 
@@ -124,7 +131,7 @@ export default function HomeScreen() {
               <View style={{ width: windowWidth - 40, height: 70, borderRadius: 20, justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
                 <Text style={styles.title}>Welcome Bart!</Text>
                 <TouchableOpacity style={{ width: 100, height: 70, zIndex: 2, justifyContent: 'center', alignItems: 'center' }}
-                  onPress={() => menuHeight.value === 295 || menuHeight.value === 70? animateMenu():{}}
+                  onPress={() => {menuHeight.value === 295 || menuHeight.value===70? animateMenu():{}} }
                 >
                   <Animated.View style={[animatedIcon]}>
                     <MaterialIcons name="keyboard-arrow-down" size={40} color={Colors.headerTextColor} />
