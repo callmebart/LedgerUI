@@ -11,6 +11,10 @@ import Colors from './constants/Colors';
 import Navigation from './navigation/Navigation';
 
 
+/*REDUX TOOLKIT*/
+import { Provider } from 'react-redux';
+import store from './features/store';
+
 export default function App() {
 
   const isLoadingComplete = useCachedResources();
@@ -27,10 +31,12 @@ export default function App() {
     return null;
   } else {
     return (
-      <SafeAreaProvider>
-        <Navigation />
-        <StatusBar />
-      </SafeAreaProvider>
+      <Provider store={store}>
+        <SafeAreaProvider>
+          <Navigation />
+          <StatusBar />
+        </SafeAreaProvider>
+      </Provider>
     );
   }
 

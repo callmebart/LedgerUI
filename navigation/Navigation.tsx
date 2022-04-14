@@ -11,6 +11,7 @@ import LogInScreen from '../screens/LogInScreen';
 import InvestmentsScreen from '../screens/InvestmentsScreen';
 import AddNewCardScreen from '../screens/AddNewCardScreen';
 import PaymentsScreen from '../screens/PaymentsScreen';
+import CardsScreen from '../screens/CardsScreen';
 
 /*THEME */
 import { ThemeContext } from '../hooks/ThemeProvider';
@@ -35,14 +36,15 @@ function RootStackNavigator() {
     return (
         <Stack.Navigator screenOptions={{
             headerShown: false,
-            animation:'slide_from_right',
+            animation: 'slide_from_right',
             gestureEnabled: true,
         }}>
             <Stack.Screen name="LogInScreen" component={LogInScreen} />
             <Stack.Screen name="HomeScreen" component={HomeScreen} />
             <Stack.Screen name="InvestmentsScreen" component={InvestmentsScreen} />
-            <Stack.Screen name="AddNewCardScreen" component={AddNewCardScreen}/>
-            <Stack.Screen name="PaymentsScreen" component={PaymentsScreen}/>
+            <Stack.Screen name="AddNewCardScreen" component={AddNewCardScreen} />
+            <Stack.Screen name="PaymentsScreen" component={PaymentsScreen} />
+            <Stack.Screen name="CardsScreen" component={CardsScreen} />
 
         </Stack.Navigator>
     )

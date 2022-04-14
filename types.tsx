@@ -12,6 +12,7 @@ export type RootStackParamList = {
   InvestmentsScreen: undefined;
   AddNewCardScreen:undefined;
   PaymentsScreen:undefined;
+  CardsScreen:undefined;
 }
 
 export type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>
