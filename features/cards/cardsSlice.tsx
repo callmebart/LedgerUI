@@ -40,6 +40,7 @@ const cardsSlice = createSlice({
                         cardNumber: card.cardNumber,
                         cardCVV: card.cardCVV,
                         cardExpirationDate: card.cardExpirationDate,
+                        //add to which user card belongs to : userId 
                     }
                 }
             }
