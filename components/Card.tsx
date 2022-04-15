@@ -7,15 +7,21 @@ import { Fontisto } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import { ThemeContext, useTheme } from '../hooks/ThemeProvider';
 import { Theme } from '../types';
+import { creditCardType } from '../features/cards/types';
+import { RootState } from '../features/store';
 
 const windowWidth = Dimensions.get('window').width;
 
 type Props = {
     width: number,
-    height: number
+    height: number,
+    cardInfo:Object | any
 }
 
 export default function Card(props: Props) {
+    
+    //Card from prps
+    const card = props.cardInfo
 
     const { theme, setTheme } = useTheme()
     const [gradient1Color, setGradient1Color] = useState(Colors.light.cardGradientColor1)
@@ -44,11 +50,11 @@ export default function Card(props: Props) {
             <Fontisto name="visa" size={30} color="white" style={{ position: 'absolute', right: 35 }} />
             <View style={{ marginLeft: 30 }}>
                 <Text style={{ color: 'white', fontSize: 22, fontFamily: 'Inconsolata' }}>Balance</Text>
-                <Text style={{ color: 'white', fontSize: 22, marginLeft: 10, fontFamily: 'CREDC', marginTop: 20 }}>320.00$</Text>
+                <Text style={{ color: 'white', fontSize: 22, marginLeft: 10, fontFamily: 'CREDC', marginTop: 20 }}>{card.cardBalance}$</Text>
             </View>
             <View style={{ marginLeft: 30 }}>
-                <Text style={{ color: 'white', fontSize: 22, fontFamily: 'Inconsolata-Bold' }}>1337 1234 4000 1234</Text>
-                <Text style={{ color: 'white', fontSize: 17, fontFamily: 'Inconsolata' }}>07/30</Text>
+                <Text style={{ color: 'white', fontSize: 22, fontFamily: 'Inconsolata-Bold' }}>{card.cardNumber}</Text>
+                <Text style={{ color: 'white', fontSize: 17, fontFamily: 'Inconsolata' }}>{card.cardExpirationDate}</Text>
             </View>
         </LinearGradient>
     )

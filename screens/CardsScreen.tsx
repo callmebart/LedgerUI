@@ -14,6 +14,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 /*Components*/
 import NeoumorphicBox from '../components/NeumorphicBox';
+import Card from '../components/Card';
 
 /*REDUX TOOLKIT*/
 import { useSelector, useDispatch } from 'react-redux';
@@ -21,6 +22,7 @@ import { selectAllCards } from '../features/cards/cardsSlice';
 import { selectUserCards } from '../features/cards/cardsSlice';
 import { RootState } from '../features/store';
 import { creditCardType } from '../features/cards/types';
+
 
 
 const windowWidth = Dimensions.get("window").width
@@ -38,8 +40,12 @@ export default function CardsScreen() {
     const renderCards: ListRenderItem<creditCardType> = ({ item }) => {
         console.log("item:", item)
         return (
-            <View key={item.id}>
-                <Text>{item.cardNumber}</Text>
+            <View style={{height:235}}>
+                <NeoumorphicBox>
+                    <View style={{ width: windowWidth - 40, height: 200, borderRadius: 15 }} >
+                        <Card width={200} height={200} cardInfo={item}/>
+                    </View>
+                </NeoumorphicBox>
             </View>
         )
     }

@@ -26,10 +26,19 @@ import Card from '../components/Card';
 import BezierLineChart from '../components/BezierLineChart';
 
 
+/*REDUX TOOLKIT*/
+import { useSelector, useDispatch } from 'react-redux';
+import { selectCardById } from '../features/cards/cardsSlice';
+import { RootState } from '../features/store';
+
 const windowWidth = Dimensions.get('window').width;
 
 export default function HomeScreen() {
   const navigation = useNavigation();
+
+  //TODO: get selectedcardId from store
+  const selectedCard = (useSelector<RootState>(state => selectCardById(state, 0)))
+
 
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
@@ -38,6 +47,7 @@ export default function HomeScreen() {
   const setNavigationBarColor = async (value: Theme) => {
     const color = await NavigationBar.setBackgroundColorAsync(themeMode[value].backgroundColor);
   }
+
 
 
   useEffect(() => {
@@ -161,7 +171,7 @@ export default function HomeScreen() {
           <View style={{ flex: 2.1 }}>
             <NeoumorphicBox>
               <TouchableOpacity onPress={() => navigation.navigate('CardsScreen')} style={{ width: windowWidth - 40, height: 200, borderRadius: 15 }} activeOpacity={.6}>
-                <Card width={200} height={200} />
+                <Card width={200} height={200} cardInfo={selectedCard} />
               </TouchableOpacity>
             </NeoumorphicBox>
           </View>
