@@ -15,6 +15,7 @@
     "@react-navigation/native-stack": "^6.6.1",
     "@reduxjs/toolkit": "^1.8.1",
     "expo": "^44.0.6",
+    "expo-barcode-scanner": "~11.2.0",
     "expo-linear-gradient": "^11.0.3",
     "expo-navigation-bar": "~1.1.1",
     "expo-splash-screen": "~0.14.1",
