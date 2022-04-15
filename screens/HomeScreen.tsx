@@ -8,7 +8,6 @@ import Animated, {
   useSharedValue,
   withSpring,
   withTiming,
-  cancelAnimation
 } from 'react-native-reanimated';
 
 /*Themes and colors*/

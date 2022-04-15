@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -22,28 +22,64 @@ import { cardAdded } from '../features/cards/cardsSlice';
 
 const windowWidth = Dimensions.get("window").width
 
-export default function AddNewCard() {
+export default function AddNewCardScreen() {
     const navigation = useNavigation()
+    const dispatch = useDispatch()
 
-    const [cardNumber, setCardNumber] = useState('')
-
+    const [cardNumber, setCardNumber] = useState<any>('1234 1234 1234 1234 ')
+    const [cardType, setCardType] = useState<any>('visa')
+    const [cardBalance, setcardBalance] = useState<any>('100.00')
+    const [cardCVV, setcardCVV] = useState<any>('222')
+    const [cardExpirationDateMonth, setcardExpirationDateMonth] = useState<any>('03')
+    const [cardExpirationDateYear, setcardExpirationDateYear] = useState<any>('27')
+    const [cardHodlerName, setCardHodlerName] = useState<any>('Bart')
 
     const { theme, setTheme } = useTheme()
     const [gradient1Color, setGradient1Color] = useState(Colors.light.cardGradientColor1)
     const [gradient2Color, setGradient2Color] = useState(Colors.light.cardGradientColor2)
     const [gradient3Color, setGradient3Color] = useState(Colors.light.cardGradientColor3)
+    const [textInputColor, setTextInputColor] = useState(Colors.light.textInputColor)
 
     useEffect(() => {
         if (theme == 'light') {
             setGradient1Color(Colors.light.cardGradientColor1)
             setGradient2Color(Colors.light.cardGradientColor2)
             setGradient3Color(Colors.light.cardGradientColor3)
+            setTextInputColor(Colors.light.textInputColor)
         } else {
             setGradient1Color(Colors.dark.cardGradientColor1)
             setGradient2Color(Colors.dark.cardGradientColor2)
             setGradient3Color(Colors.dark.cardGradientColor3)
+            setTextInputColor(Colors.dark.backgroundColor)
         }
     }, [theme])
+
+    const addCreditCard = async () => {
+        const cardExpirationDate = `${cardExpirationDateMonth}/${cardExpirationDateYear}`;
+        dispatch(cardAdded({
+            id: 0,
+            cardType: cardType,
+            cardBalance: cardBalance,
+            cardNumber: cardNumber,
+            cardCVV: cardCVV,
+            cardExpirationDate: cardExpirationDate,
+            cardHodlerName: cardHodlerName,
+            userId: 0,
+        }))
+
+        Alert.alert(
+            "Card has been added to your wallet",
+            "Do You want to add more cards ?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => navigation.goBack(),
+                    style: "cancel"
+                },
+                { text: "Yes", onPress: () => console.log("OK Pressed") }
+            ]
+        )
+    }
 
     return (
         <View style={[styles.container, themeMode[theme]]}>
@@ -99,13 +135,14 @@ export default function AddNewCard() {
                 >
                     <View style={{ flex: 1.4 }}>
                         <NeoumorphicBox>
-                            <View style={{ width: windowWidth - 40, height: 300, borderRadius: 15 }}>
+                            <View style={{ width: windowWidth - 40, height: 300, borderRadius: 15, justifyContent: 'space-evenly' }}>
                                 <View>
                                     <Text style={styles.h2Title}>Place Card Number</Text>
                                     <TextInput
-                                        style={styles.textInputCard}
+                                        style={{ ...styles.textInputCard, backgroundColor: textInputColor }}
                                         placeholder={"1234 1234 1234 1234"}
                                         placeholderTextColor={'#9f9f9f'}
+                                        onChange={setCardNumber}
                                     />
                                 </View>
 
@@ -114,23 +151,26 @@ export default function AddNewCard() {
                                         <Text style={styles.h2Title}>Expiration Date</Text>
                                         <View style={{ flexDirection: 'row' }}>
                                             <TextInput
-                                                style={styles.textInputCardDate}
+                                                style={{ ...styles.textInputCardDate, backgroundColor: textInputColor }}
                                                 placeholder={"00"}
                                                 placeholderTextColor={'#9f9f9f'}
+                                                onChange={setcardExpirationDateMonth}
                                             />
                                             <TextInput
-                                                style={styles.textInputCardDate}
+                                                style={{ ...styles.textInputCardDate, backgroundColor: textInputColor }}
                                                 placeholder={"00"}
                                                 placeholderTextColor={'#9f9f9f'}
+                                                onChange={setcardExpirationDateYear}
                                             />
                                         </View>
                                     </View>
                                     <View style={{ flex: 1 }}>
                                         <Text style={styles.h2Title}>CVV</Text>
                                         <TextInput
-                                            style={styles.textInputCardCVV}
+                                            style={{ ...styles.textInputCardCVV, backgroundColor: textInputColor }}
                                             placeholder={"123"}
                                             placeholderTextColor={'#9f9f9f'}
+                                            onChange={setcardCVV}
                                         />
                                     </View>
                                 </View>
@@ -138,10 +178,24 @@ export default function AddNewCard() {
                                 <View>
                                     <Text style={styles.h2Title}>Place Card Hodler Name</Text>
                                     <TextInput
-                                        style={styles.textInputCard}
+                                        style={{ ...styles.textInputCard, backgroundColor: textInputColor }}
                                         placeholder={"John Doe"}
                                         placeholderTextColor={'#9f9f9f'}
+                                        onChange={setCardHodlerName}
                                     />
+                                </View>
+
+                                <View style={{ width: windowWidth - 40, alignItems: 'center' }}>
+                                    <TouchableOpacity style={styles.addCardButton} onPress={() => addCreditCard()} activeOpacity={.7}>
+                                        <LinearGradient
+                                            colors={[gradient1Color, gradient2Color, gradient3Color]}
+                                            style={styles.addCardButtonGradient}
+                                            start={{ x: 0, y: 0 }}
+                                            end={{ x: 1, y: 1 }}
+                                        >
+                                            <Text style={{ color: 'white', fontSize: 13, fontWeight: 'bold' }}>Add New Card</Text>
+                                        </LinearGradient>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </NeoumorphicBox>
@@ -174,10 +228,9 @@ const styles = StyleSheet.create({
     },
     h2Title: {
         color: Colors.basicTextGrey,
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: 'bold',
         paddingHorizontal: 10,
-        paddingTop: 10,
     },
     gradient: {
         flex: 1,
@@ -186,34 +239,46 @@ const styles = StyleSheet.create({
     },
     textInputCard: {
         width: windowWidth - 60,
-        height: 40,
-        marginTop: 10,
-        borderRadius: 15,
-        backgroundColor: 'rgba(0,0,0,0.1)',
+        height: 30,
+        marginTop: 8,
+        borderRadius: 7,
         alignSelf: 'center',
         paddingLeft: 10,
         color: Colors.basicTextGrey,
+        opacity: 1,
+        elevation: 1,
     },
     textInputCardDate: {
         flex: 1,
         marginHorizontal: 10,
-        height: 40,
-        marginTop: 10,
-        borderRadius: 15,
-        backgroundColor: 'rgba(0,0,0,0.1)',
+        height: 30,
+        marginTop: 8,
+        borderRadius: 7,
         textAlign: 'center',
         color: Colors.basicTextGrey,
+        elevation: 1
     },
     textInputCardCVV: {
         flex: 1,
         marginHorizontal: 10,
-        height: 40,
-        marginTop: 10,
-        borderRadius: 15,
-        backgroundColor: 'rgba(0,0,0,0.1)',
+        height: 30,
+        marginTop: 8,
+        borderRadius: 7,
         textAlign: 'center',
         color: Colors.basicTextGrey,
+        elevation: 1
+    },
+    addCardButton: {
+        width: windowWidth - 60,
+        height: 40,
+        borderRadius: 7,
+    },
+    addCardButtonGradient: {
+        flex: 1,
+        borderRadius: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 
-    }
 
 });

@@ -4,5 +4,7 @@ export type creditCardType = {
     cardBalance: string,
     cardNumber: string,
     cardCVV: string,
-    cardExpirationDate: string
+    cardExpirationDate: string,
+    cardHodlerName: string,
+    userId:any
 }

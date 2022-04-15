@@ -14,13 +14,15 @@ export default {
         cardGradientColor3: '#e3b2ed',
 
         pathLineColor: 'rgba(0, 0, 0,0.25)',
+        
+        textInputColor:'#ededed'
     },
     dark: {
         backgroundColor: '#212121',
-        neuGradientFirstColor: 'rgba(23, 23, 23, 0.84)',
-        neuGradientSecondColor: 'rgba(23, 23, 23, 0.7)',
-        shadow1: 'rgba(95, 92, 94, 0.2)',
-        shadow2: 'rgba(0,0,0,0.7)',
+        neuGradientFirstColor: 'rgba(23, 23, 23, 1)',
+        neuGradientSecondColor: 'rgba(23, 23, 23, 1)',
+        shadow1: 'rgba(95, 92, 94, 0.15)',
+        shadow2: 'rgba(0,0,0,0.4)',
         cardGradientColor1: 'rgb(67,77,112)',
         cardGradientColor2: 'rgb(127,132,169)',
         cardGradientColor3: 'rgb(276,143,140)',

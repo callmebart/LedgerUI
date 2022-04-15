@@ -18,6 +18,8 @@ import NeoumorphicBox from '../components/NeumorphicBox';
 /*REDUX TOOLKIT*/
 import { useSelector, useDispatch } from 'react-redux';
 import { selectAllCards } from '../features/cards/cardsSlice';
+import { selectUserCards } from '../features/cards/cardsSlice';
+import { RootState } from '../features/store';
 
 
 const windowWidth = Dimensions.get("window").width
@@ -28,7 +30,8 @@ export default function CardsScreen() {
     const { theme, setTheme } = useTheme()
 
     const dispatch = useDispatch()
-    const cards = useSelector(selectAllCards) //all cards 
+    //const cards = useSelector(selectAllCards) //all cards 
+    const cards = useSelector<RootState>(state=>selectUserCards(state,0))
     console.log("cards:", cards)
 
     return (
