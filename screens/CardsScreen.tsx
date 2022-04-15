@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, ListRenderItem, VirtualizedList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -20,6 +20,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectAllCards } from '../features/cards/cardsSlice';
 import { selectUserCards } from '../features/cards/cardsSlice';
 import { RootState } from '../features/store';
+import { creditCardType } from '../features/cards/types';
 
 
 const windowWidth = Dimensions.get("window").width
@@ -31,9 +32,17 @@ export default function CardsScreen() {
 
     const dispatch = useDispatch()
     //const cards = useSelector(selectAllCards) //all cards 
-    const cards = useSelector<RootState>(state=>selectUserCards(state,0))
-    console.log("cards:", cards)
+    const cards = useSelector<RootState>(state => selectUserCards(state, 0))
+    //console.log("cards:", cards)
 
+    const renderCards: ListRenderItem<creditCardType> = ({ item }) => {
+        console.log("item:", item)
+        return (
+            <View key={item.id}>
+                <Text>{item.cardNumber}</Text>
+            </View>
+        )
+    }
     return (
         <View style={[styles.container, themeMode[theme]]}>
             <View style={styles.header}>
@@ -53,9 +62,12 @@ export default function CardsScreen() {
                 </NeoumorphicBox>
             </View>
             <View style={styles.content}>
-                <Text>
-
-                </Text>
+                <VirtualizedList
+                    data={cards}
+                    getItem={(data, index) => data[index]}
+                    getItemCount={data => data.length}
+                    renderItem={renderCards}
+                />
             </View>
         </View>
     )
