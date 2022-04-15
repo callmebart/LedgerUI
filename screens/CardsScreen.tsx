@@ -33,16 +33,13 @@ export default function CardsScreen() {
     const { theme, setTheme } = useTheme()
 
     const dispatch = useDispatch()
-    //const cards = useSelector(selectAllCards) //all cards 
     const cards = useSelector<RootState>(state => selectUserCards(state, 0))
-    //console.log("cards:", cards)
 
     const renderCards: ListRenderItem<creditCardType> = ({ item }) => {
-        console.log("item:", item)
         return (
-            <View style={{height:235}}>
+            <View style={{ width:windowWidth, height:235,marginLeft:20,marginTop:15}}>
                 <NeoumorphicBox>
-                    <View style={{ width: windowWidth - 40, height: 200, borderRadius: 15 }} >
+                    <View style={{ width: windowWidth - 40, height: 200, borderRadius: 15, }} >
                         <Card width={200} height={200} cardInfo={item}/>
                     </View>
                 </NeoumorphicBox>
@@ -73,6 +70,7 @@ export default function CardsScreen() {
                     getItem={(data, index) => data[index]}
                     getItemCount={data => data.length}
                     renderItem={renderCards}
+                    style={{width:windowWidth}}
                 />
             </View>
         </View>
@@ -97,7 +95,7 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        width: windowWidth - 40,
+        width: windowWidth,
     },
     h2Title: {
         color: Colors.basicTextGrey,

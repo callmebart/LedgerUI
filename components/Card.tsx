@@ -7,8 +7,6 @@ import { Fontisto } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import { ThemeContext, useTheme } from '../hooks/ThemeProvider';
 import { Theme } from '../types';
-import { creditCardType } from '../features/cards/types';
-import { RootState } from '../features/store';
 
 const windowWidth = Dimensions.get('window').width;
 

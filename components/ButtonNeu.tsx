@@ -24,7 +24,7 @@ const ButtonNeu = (props:Props) => {
 
 
   return (
-    <TouchableOpacity onPress={props.onPress} style={styles.container} activeOpacity={.7}>
+    <TouchableOpacity onPress={props.onPress} style={styles.container} activeOpacity={.8}>
       <Shadow
         distance={DISTANCE}
         size={SIZE}
