@@ -15,36 +15,19 @@ import { MaterialIcons } from '@expo/vector-icons';
 /*Components*/
 import NeoumorphicBox from '../components/NeumorphicBox';
 
+/*REDUX TOOLKIT*/
+import { useDispatch, useSelector } from 'react-redux';
+import { selectAllUsers } from '../features/users/usersSlice';
+
 const windowWidth = Dimensions.get("window").width
 
 export default function PaymentsScreen() {
     const navigation = useNavigation()
     const { theme, setTheme } = useTheme()
 
-    const users: any = [
-        {
-            id: 0,
-            iconName: 'add'
-        },
-        {
-            userId: 1,
-            userName: 'Tom',
-            accoutAddress: '3333 2344 0000 2033',
-            profileImage: require('../assets/images/users/tom.png')
-        },
-        {
-            userId: 2,
-            userName: 'Debora',
-            accoutAddress: '3333 2344 0000 2033',
-            profileImage: require('../assets/images/users/debora.png')
-        },
-        {
-            userId: 3,
-            userName: 'John',
-            accoutAddress: '3333 2344 0000 2033',
-            profileImage: require('../assets/images/users/barack.png')
-        }
-    ]
+    const dispatch = useDispatch()
+    
+    const users = useSelector(selectAllUsers)
 
     const renderUsers: ListRenderItem<any> = ({ item, index }) => {
         console.log(item)

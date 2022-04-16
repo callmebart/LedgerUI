@@ -1,4 +1,9 @@
 export type userType = {
-    id:any,
-    name:string,
+    userId: any,
+    userName: string,
+    accoutAddress: {
+        creditCard:string,
+        metaMask:string,
+    },
+    profileImage: string,
 }
