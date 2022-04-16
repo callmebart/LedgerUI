@@ -13,8 +13,8 @@ const users = [
         userId: 1,
         userName: 'Tom',
         accoutAddress: {
-            creditCard:'3333 2344 0000 2033',
-            metaMask:'cd2a3d9f938e13cd947ec05abc7fe734df8dd826'
+            creditCard: '3333 2344 0000 2033',
+            metaMask: 'cd2a3d9f938e13cd947ec05abc7fe734df8dd826'
         },
         profileImage: require('../../assets/images/users/tom.png')
     },
@@ -22,8 +22,8 @@ const users = [
         userId: 2,
         userName: 'Debora',
         accoutAddress: {
-            creditCard:'3333 2344 0000 2033',
-            metaMask:'cd2a3d9f938e13cd947ec05abc7fe734df8dd826'
+            creditCard: '3333 2344 0000 2033',
+            metaMask: 'cd2a3d9f938e13cd947ec05abc7fe734df8dd826'
         },
         profileImage: require('../../assets/images/users/debora.png')
     },
@@ -31,15 +31,15 @@ const users = [
         userId: 3,
         userName: 'John',
         accoutAddress: {
-            creditCard:'3333 2344 0000 2033',
-            metaMask:'cd2a3d9f938e13cd947ec05abc7fe734df8dd826'
+            creditCard: '3333 2344 0000 2033',
+            metaMask: 'cd2a3d9f938e13cd947ec05abc7fe734df8dd826'
         },
         profileImage: require('../../assets/images/users/barack.png')
     }
 ]
 
 const initialState = {
-    cards: [...users],
+    users: [...users],
     status: 'idle',
     error: null
 }
@@ -48,14 +48,14 @@ const initialState = {
 //
 //
 const usersSlice = createSlice({
-    name: "users",
+    name: 'users',
     initialState,
     reducers: {
         addNewUser: {
             reducer(state, action: PayloadAction<userType>) {
                 console.log(action.payload)
                 state.users.push(action.payload)
-              
+
             },
             prepare: (user: userType) => {
                 return {
@@ -63,8 +63,8 @@ const usersSlice = createSlice({
                         userId: nanoid(),
                         userName: user.userName,
                         accoutAddress: {
-                            creditCard:user.accoutAddress.creditCard,
-                            metaMask:user.accoutAddress.metaMask
+                            creditCard: user.accoutAddress.creditCard,
+                            metaMask: user.accoutAddress.metaMask
                         },
                         profileImage: require('../../assets/images/users/default.png')
                     }
@@ -75,14 +75,14 @@ const usersSlice = createSlice({
 })
 
 
-export const {addNewUser} = usersSlice.actions
+export const { addNewUser } = usersSlice.actions
 
-export const selectAllUsers = (state:RootState)=>state.users.users
-//export const selectUserById = (state:RootState,userId:any) => state.users.users.find(user => user.userId === userId)
-// export const selectUserPeople = createSelector(
-//     [selectAllUsers,(state:RootState,userId:any)=>userId],
-//     (users,userId) => users.users.filter(user => user.userId == userId)
-// )
+export const selectAllUsers = (state: RootState) => state.users.users
+export const selectUserById = (state: RootState, userId: any) => state.users.users.find(user => user.userId === userId)
+export const selectUserPeople = createSelector(
+    [selectAllUsers, (state: RootState, userId: any) => userId],
+    (users, userId) => users.filter(user => user.userId == userId)
+)
 export default usersSlice.reducer
 
 

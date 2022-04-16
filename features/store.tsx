@@ -1,19 +1,18 @@
 /*REDUX TOOLKIT*/
-import { configureStore,combineReducers } from "@reduxjs/toolkit";
-
+import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers } from "redux";
 
 /*REDUCERS*/
 import cardsReducer from "./cards/cardsSlice";
 import usersReducer from "./users/usersSlice";
 
 const rootReducer = combineReducers({
-    users:usersReducer,
     cards:cardsReducer,
-    
+    users:usersReducer
 })
 const store  = configureStore({
     reducer:rootReducer
 })
 
-export type RootState = ReturnType<typeof store.getState>
+export type RootState= ReturnType<typeof store.getState>
 export default store
