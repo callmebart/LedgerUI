@@ -1,16 +1,18 @@
 /*REDUX TOOLKIT*/
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore,combineReducers } from "@reduxjs/toolkit";
 
 
 /*REDUCERS*/
 import cardsReducer from "./cards/cardsSlice";
 import usersReducer from "./users/usersSlice";
 
+const rootReducer = combineReducers({
+    users:usersReducer,
+    cards:cardsReducer,
+    
+})
 const store  = configureStore({
-    reducer:{
-        cards:cardsReducer,
-        users:usersReducer
-    },
+    reducer:rootReducer
 })
 
 export type RootState = ReturnType<typeof store.getState>

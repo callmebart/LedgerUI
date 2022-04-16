@@ -4,7 +4,7 @@ import { userType } from "./types"
 
 
 
-const users: any = [
+const users = [
     {
         id: 0,
         iconName: 'add'
@@ -16,7 +16,7 @@ const users: any = [
             creditCard:'3333 2344 0000 2033',
             metaMask:'cd2a3d9f938e13cd947ec05abc7fe734df8dd826'
         },
-        profileImage: require('../assets/images/users/tom.png')
+        profileImage: require('../../assets/images/users/tom.png')
     },
     {
         userId: 2,
@@ -25,7 +25,7 @@ const users: any = [
             creditCard:'3333 2344 0000 2033',
             metaMask:'cd2a3d9f938e13cd947ec05abc7fe734df8dd826'
         },
-        profileImage: require('../assets/images/users/debora.png')
+        profileImage: require('../../assets/images/users/debora.png')
     },
     {
         userId: 3,
@@ -34,7 +34,7 @@ const users: any = [
             creditCard:'3333 2344 0000 2033',
             metaMask:'cd2a3d9f938e13cd947ec05abc7fe734df8dd826'
         },
-        profileImage: require('../assets/images/users/barack.png')
+        profileImage: require('../../assets/images/users/barack.png')
     }
 ]
 
@@ -48,13 +48,13 @@ const initialState = {
 //
 //
 const usersSlice = createSlice({
-    name: 'users',
+    name: "users",
     initialState,
     reducers: {
         addNewUser: {
             reducer(state, action: PayloadAction<userType>) {
                 console.log(action.payload)
-                state.cards.push(action.payload)
+                state.users.push(action.payload)
               
             },
             prepare: (user: userType) => {
@@ -66,7 +66,7 @@ const usersSlice = createSlice({
                             creditCard:user.accoutAddress.creditCard,
                             metaMask:user.accoutAddress.metaMask
                         },
-                        profileImage: require('../assets/images/users/default.png')
+                        profileImage: require('../../assets/images/users/default.png')
                     }
                 }
             }
@@ -77,14 +77,12 @@ const usersSlice = createSlice({
 
 export const {addNewUser} = usersSlice.actions
 
-export const selectAllUsers = (state:RootState)=>state.cards.cards
-export const selectUserById = (state:RootState,userId:any) => state.cards.cards.find(user => user.userId === userId)
-export const selectUserCards = createSelector(
-    [selectAllUsers,(state:RootState,userId:number)=>userId],
-    (users,userId) => users.filter(user => user.userId == userId)
-)
-
-
+export const selectAllUsers = (state:RootState)=>state.users.users
+//export const selectUserById = (state:RootState,userId:any) => state.users.users.find(user => user.userId === userId)
+// export const selectUserPeople = createSelector(
+//     [selectAllUsers,(state:RootState,userId:any)=>userId],
+//     (users,userId) => users.users.filter(user => user.userId == userId)
+// )
 export default usersSlice.reducer
 
 

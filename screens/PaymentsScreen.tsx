@@ -27,7 +27,8 @@ export default function PaymentsScreen() {
 
     const dispatch = useDispatch()
     
-    const users = useSelector(selectAllUsers)
+    //const users = useSelector(selectAllUsers)
+    //console.log(users)
 
     const renderUsers: ListRenderItem<any> = ({ item, index }) => {
         console.log(item)
@@ -79,7 +80,7 @@ export default function PaymentsScreen() {
                 <View style={{marginTop:-15}}>
                     <Text style={styles.h2Title}>Send money to</Text>
                     <FlatList
-                        data={users}
+                        data={[]}
                         renderItem={renderUsers}
                         horizontal
                         showsHorizontalScrollIndicator={false}
