@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, FlatList, ListRenderItem, Image, TextInput,ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, FlatList, ListRenderItem, Image, TextInput, ScrollView, Touchable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -19,6 +19,11 @@ import NeoumorphicBox from '../components/NeumorphicBox';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAllUsers } from '../features/users/usersSlice';
 
+
+/*cryptoWallet */
+import { useWalletConnect } from '@walletconnect/react-native-dapp';
+
+
 const windowWidth = Dimensions.get("window").width
 
 export default function PaymentsScreen() {
@@ -26,12 +31,28 @@ export default function PaymentsScreen() {
     const { theme, setTheme } = useTheme()
 
     const dispatch = useDispatch()
-    
+
     const users = useSelector(selectAllUsers)
-    console.log(users)
+    const connector = useWalletConnect()
+
+    const [metamaskConnected, setMetamaskConnected] = useState(false)
+
+    const connectWallet = React.useCallback(() => {
+        return connector.connect();
+    }, [connector]);
+
+    const killSession = React.useCallback(() => {
+        return connector.killSession();
+    }, [connector]);
+
+    const shortenAddress = (address: string) => {
+        return `${address.slice(0, 6)}...${address.slice(
+            address.length - 4,
+            address.length
+        )}`;
+    }
 
     const renderUsers: ListRenderItem<any> = ({ item, index }) => {
-        console.log(item)
         return (
             <View key={index} style={{ height: 120 }}>
                 {item.iconName
@@ -77,50 +98,69 @@ export default function PaymentsScreen() {
                 </NeoumorphicBox>
             </View>
             <View style={styles.content}>
-                <View style={{marginTop:-15}}>
+                <View style={{ marginTop: -15 }}>
                     <Text style={styles.h2Title}>Send money to</Text>
                     <FlatList
                         data={users}
                         renderItem={renderUsers}
                         horizontal
                         showsHorizontalScrollIndicator={false}
-                        keyExtractor={(item, index) => 'key'+index}
+                        keyExtractor={(item, index) => 'key' + index}
                     />
                 </View>
-                <View style={{ justifyContent: 'space-between',marginTop:-10 }}>
+                <View style={{ justifyContent: 'space-between', marginTop: -10 }}>
                     <Text style={styles.h2Title}>Send Cryptocurrencies</Text>
-                    <View style={{ marginLeft: 20, marginTop: 20, flexDirection: 'row' }}>
-                        <View style={{ flex: 1.1 }}>
+                    {metamaskConnected ?
+                        <View>
+                            <View style={{ marginLeft: 20, marginTop: 20, flexDirection: 'row' }}>
+                                <View style={{ flex: 1.1 }}>
+                                    <NeoumorphicBox>
+                                        <TouchableOpacity style={{ width: 90, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+                                            <MaterialIcons name="qr-code-scanner" size={30} color="#9f9f9f" />
+                                        </TouchableOpacity>
+                                    </NeoumorphicBox>
+                                </View>
+                                <View style={{ flex: 2 }}>
+                                    <NeoumorphicBox>
+                                        <View style={{ width: 200, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+                                            <TextInput
+                                                style={{ ...styles.textInput }}
+                                                placeholder={"Place address here"}
+                                                placeholderTextColor={'#9f9f9f'}
+                                            />
+                                        </View>
+                                    </NeoumorphicBox>
+                                </View>
+
+                            </View>
+                        </View>
+                        :
+                        <View style={{ marginLeft: 20, marginTop: 20, }}>
                             <NeoumorphicBox>
-                                <TouchableOpacity style={{ width: 90, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
-                                    <MaterialIcons name="qr-code-scanner" size={30} color="#9f9f9f" />
+                                <TouchableOpacity onPress={!connector.connected ? connectWallet : killSession} style={{ width: windowWidth - 40, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+                                    <Image source={require('../assets/images/metamask.png')} style={{ width: windowWidth / 2, height: 30, opacity: 0.6 }} />
+
                                 </TouchableOpacity>
                             </NeoumorphicBox>
                         </View>
-                        <View style={{ flex: 2 }}>
-                            <NeoumorphicBox>
-                                <View style={{ width: 200, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
-                                    <TextInput
-                                        style={{ ...styles.textInput }}
-                                        placeholder={"Place address here"}
-                                        placeholderTextColor={'#9f9f9f'}
-                                    />
-                                </View>
-                            </NeoumorphicBox>
-                        </View>
 
-                    </View>
+                    }
                 </View>
 
-                <View style={{justifyContent:'center',marginLeft:20,marginTop:65}}>
+                <View style={{ justifyContent: 'center', marginLeft: 20, marginTop: 65 }}>
                     <NeoumorphicBox>
-                        <ScrollView style={{ width: windowWidth-40, height: 230, borderRadius: 20, }}>
-                            
+                        <ScrollView style={{ width: windowWidth - 40, height: 230, borderRadius: 20, }}>
+                            {connector.connected ?
+                                <Text>
+                                    {shortenAddress(connector.accounts[0])}
+                                </Text>
+                                : <Text></Text>
+                            }
                         </ScrollView>
                     </NeoumorphicBox>
                 </View>
             </View>
-            <View  style={{ width: windowWidth-40, height: 100}}></View>
+            <View style={{ width: windowWidth - 40, height: 100 }}></View>
         </ScrollView>
     )
 }
@@ -140,7 +180,7 @@ const styles = StyleSheet.create({
         height: 100,
         marginTop: 30,
         width: windowWidth - 40,
-        alignSelf:'center'
+        alignSelf: 'center'
     },
     content: {
         flex: 1,

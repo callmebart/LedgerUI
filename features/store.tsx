@@ -7,12 +7,13 @@ import cardsReducer from "./cards/cardsSlice";
 import usersReducer from "./users/usersSlice";
 
 const rootReducer = combineReducers({
-    cards:cardsReducer,
-    users:usersReducer
-})
-const store  = configureStore({
-    reducer:rootReducer
+    cards: cardsReducer,
+    users: usersReducer
 })
 
-export type RootState= ReturnType<typeof store.getState>
+const store = configureStore({
+    reducer: rootReducer
+})
+
+export type RootState = ReturnType<typeof store.getState>
 export default store
