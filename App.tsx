@@ -15,7 +15,7 @@ import Navigation from './navigation/Navigation';
 import { Provider } from 'react-redux';
 import store from './features/store';
 
-/*CRYPTO */
+
 
 
 export default function App() {

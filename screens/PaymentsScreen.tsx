@@ -52,6 +52,9 @@ export default function PaymentsScreen() {
         )}`;
     }
 
+
+
+
     const renderUsers: ListRenderItem<any> = ({ item, index }) => {
         return (
             <View key={index} style={{ height: 120 }}>
@@ -110,7 +113,7 @@ export default function PaymentsScreen() {
                 </View>
                 <View style={{ justifyContent: 'space-between', marginTop: -10 }}>
                     <Text style={styles.h2Title}>Send Cryptocurrencies</Text>
-                    {metamaskConnected ?
+                    {connector.connected ?
                         <View>
                             <View style={{ marginLeft: 20, marginTop: 20, flexDirection: 'row' }}>
                                 <View style={{ flex: 1.1 }}>
@@ -133,13 +136,37 @@ export default function PaymentsScreen() {
                                 </View>
 
                             </View>
+
+                            <View style={{ marginLeft: 20, marginTop: 60 }}>
+                                <NeoumorphicBox>
+                                    <TouchableOpacity onPress={() => console.log("TODO: SEND ETH")} style={{ width: windowWidth - 40, height: 50, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+                                        <View style={{ flexDirection: 'row', opacity: 0.6, width: windowWidth / 2.5, justifyContent: 'space-evenly', alignItems: 'center' }}>
+                                            <MaterialIcons name="transfer-within-a-station" size={24} color="#ff8800" />
+                                            <Text style={{ color: '#9f9f9f', fontSize: 13 }}>SEND TRANSACTION</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </NeoumorphicBox>
+                            </View>
+                            <View style={{ marginLeft: 20, marginTop: 60, flexDirection: 'row', width: windowWidth }}>
+
+                                <NeoumorphicBox>
+                                    <TouchableOpacity onPress={() => killSession()} style={{ width:windowWidth-40, height: 50, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+                                        <View style={{ flexDirection: 'row', opacity: 0.6, width: windowWidth / 2.5, justifyContent: 'space-evenly' }}>
+                                            <FontAwesome5 name="book-dead" size={20} color="#ff8800" />
+                                            <Text style={{ color: '#9f9f9f', fontSize: 13 }}>KILL SESSION</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </NeoumorphicBox>
+
+
+                            </View>
+
                         </View>
                         :
                         <View style={{ marginLeft: 20, marginTop: 20, }}>
                             <NeoumorphicBox>
-                                <TouchableOpacity onPress={!connector.connected ? connectWallet : killSession} style={{ width: windowWidth - 40, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+                                <TouchableOpacity onPress={() => connectWallet()} style={{ width: windowWidth - 40, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
                                     <Image source={require('../assets/images/metamask.png')} style={{ width: windowWidth / 2, height: 30, opacity: 0.6 }} />
-
                                 </TouchableOpacity>
                             </NeoumorphicBox>
                         </View>
