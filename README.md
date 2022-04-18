@@ -61,11 +61,17 @@ Payments screen : connect crypto wallet
 <p align="center">
     <img src="https://user-images.githubusercontent.com/62243649/163737071-bdeb49d2-ba0f-4cde-badf-9d81f1e9c4ca.png" width="600" height="1200">
 </p>
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/62243649/163737061-6dcc5438-13e7-4edb-b80b-7068016d82dc.png" width="600" height="1200">
+</p>
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/62243649/163737059-ea0ad7e1-48d9-4ec0-9547-c24efed135fe.png" width="600" height="1200">
+</p>
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/62243649/163737063-08626955-7ffd-4b7c-a647-2e9de0dbb4c3.png" width="600" height="1200">
+</p>
 
 
-![278377166_286405377019387_5632909259057706904_n](https://user-images.githubusercontent.com/62243649/163737059-ea0ad7e1-48d9-4ec0-9547-c24efed135fe.png)
-![278405330_533141058537285_4580794891808271372_n](https://user-images.githubusercontent.com/62243649/163737061-6dcc5438-13e7-4edb-b80b-7068016d82dc.png)
-![278448954_355380619974545_2694610502639861317_n](https://user-images.githubusercontent.com/62243649/163737063-08626955-7ffd-4b7c-a647-2e9de0dbb4c3.png)
 
 
 
