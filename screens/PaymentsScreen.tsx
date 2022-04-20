@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, FlatList, ListRenderItem, Image, TextInput, ScrollView, Touchable } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, FlatList, ListRenderItem, Image, TextInput, ScrollView, LogBox, Touchable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -22,11 +22,19 @@ import { selectAllUsers } from '../features/users/usersSlice';
 
 /*cryptoWallet */
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import Web3 from 'web3';
 
 
 const windowWidth = Dimensions.get("window").width
 
 export default function PaymentsScreen() {
+
+    LogBox.ignoreLogs
+        (['Warning: The provided value \'moz',
+            'Warning: The provided value \'ms-stream'
+        ])
+
     const navigation = useNavigation()
     const { theme, setTheme } = useTheme()
 
@@ -48,8 +56,10 @@ export default function PaymentsScreen() {
 
     const [metamaskConnected, setMetamaskConnected] = useState(false)
 
+
     const connectWallet = React.useCallback(() => {
         setScrollEnabled(true)
+
         return connector.connect();
     }, [connector]);
 
@@ -62,6 +72,34 @@ export default function PaymentsScreen() {
             address.length - 4,
             address.length
         )}`;
+    }
+
+    const sendTransaction = async () => {
+        const provider: any = new WalletConnectProvider({
+            infuraId: "27e484dcd9e3efcfd25a83a78777cdf1",
+            qrcode: false, //without this it tries to call window.document 
+            connector: connector
+        })
+        await provider.enable()
+        const web3 = new Web3(provider)
+
+        const accounts = await web3.eth.getAccounts();
+        console.log("acc:",accounts[0])
+      
+        const tx = {
+            from: accounts[0], // must match user's active address.
+            to: '0x0000000000000000000000000000000000000000',       
+            gas: '0x2710', // customizable by user during MetaMask confirmation.
+            gasPrice: '0x09184e72a000', // customizable by user during MetaMask confirmation.
+            value: '0x00', // Only required to send ether to the recipient from the initiating external account.
+            data:
+              '0x7f7465737432000000000000000000000000000000000000000000000000000000600057', // Optional, but used for defining smart contract creation and interaction.        
+            }
+                 
+          const txHash = await web3.eth.sendTransaction(tx).catch((e)=>{
+              console.log(e)
+          })
+        
     }
 
     const renderUsers: ListRenderItem<any> = ({ item, index }) => {
@@ -122,7 +160,7 @@ export default function PaymentsScreen() {
         }
     ]
     const renderTransactions: any = trs.map((item: any) => {
-        console.log(item.id)
+        //console.log(item.id)
         return (
             <View key={item.id} style={{ width: windowWidth - 40, padding: 10, flexDirection: 'row', justifyContent: 'space-evenly' }}>
 
@@ -222,7 +260,7 @@ export default function PaymentsScreen() {
 
                             <View style={{ marginLeft: 20, marginTop: 60 }}>
                                 <NeoumorphicBox>
-                                    <TouchableOpacity onPress={() => console.log("TODO: SEND ETH")} style={{ width: windowWidth - 40, height: 50, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+                                    <TouchableOpacity onPress={sendTransaction} style={{ width: windowWidth - 40, height: 50, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
                                         <View style={{ flexDirection: 'row', opacity: 0.6, width: windowWidth / 2.5, justifyContent: 'space-evenly', alignItems: 'center' }}>
                                             <MaterialIcons name="transfer-within-a-station" size={24} color="#ff8800" />
                                             <Text style={{ color: '#9f9f9f', fontSize: 13 }}>SEND TRANSACTION</Text>
@@ -233,7 +271,7 @@ export default function PaymentsScreen() {
                             <View style={{ marginLeft: 20, marginTop: 60, flexDirection: 'row', width: windowWidth }}>
 
                                 <NeoumorphicBox>
-                                    <TouchableOpacity onPress={() => killSession()} style={{ width: windowWidth - 40, height: 50, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+                                    <TouchableOpacity onPress={killSession} style={{ width: windowWidth - 40, height: 50, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
                                         <View style={{ flexDirection: 'row', opacity: 0.6, width: windowWidth / 2.5, justifyContent: 'space-evenly' }}>
                                             <FontAwesome5 name="book-dead" size={20} color="#ff8800" />
                                             <Text style={{ color: '#9f9f9f', fontSize: 13 }}>KILL SESSION</Text>
@@ -250,7 +288,7 @@ export default function PaymentsScreen() {
                         :
                         <View style={{ marginLeft: 20, marginTop: 20, }}>
                             <NeoumorphicBox>
-                                <TouchableOpacity onPress={() => connectWallet()} style={{ width: windowWidth - 40, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+                                <TouchableOpacity onPress={connectWallet} style={{ width: windowWidth - 40, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
                                     <Image source={require('../assets/images/metamask.png')} style={{ width: windowWidth / 2, height: 30, opacity: 0.6 }} />
                                 </TouchableOpacity>
                             </NeoumorphicBox>
@@ -264,9 +302,9 @@ export default function PaymentsScreen() {
 
                         <NeoumorphicBox>
                             <ScrollView style={{ width: windowWidth - 40, height: 230, borderRadius: 20, }}
-                                onTouchStart={(ev)=>setScrollEnabled(false)}
-                                onMomentumScrollEnd={(e)=>setScrollEnabled(true)}
-                                onScrollEndDrag={(e)=>setScrollEnabled(true)}
+                                onTouchStart={(ev) => setScrollEnabled(false)}
+                                onMomentumScrollEnd={(e) => setScrollEnabled(true)}
+                                onScrollEndDrag={(e) => setScrollEnabled(true)}
                             >
                                 {renderTransactions}
                             </ScrollView>
@@ -274,7 +312,7 @@ export default function PaymentsScreen() {
                     </View>
                 </View>
             </View>
-            <View style={{ width: windowWidth - 40, height: 50,marginTop:10 }}></View>
+            <View style={{ width: windowWidth - 40, height: 50, marginTop: 10 }}></View>
         </ScrollView>
     )
 }
