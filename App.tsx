@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet,LogBox } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as NavigationBar from 'expo-navigation-bar';
@@ -19,6 +19,11 @@ import store from './features/store';
 
 
 export default function App() {
+
+  LogBox.ignoreLogs
+       (['Warning: The provided value \'moz', 
+         'Warning: The provided value \'ms-stream'
+       ])
 
   const isLoadingComplete = useCachedResources();
   const setNavigationBarColor = async () => {

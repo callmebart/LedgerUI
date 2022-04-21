@@ -12,6 +12,9 @@ import { themeMode } from '../constants/themeMode';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
+/*Default data*/
+import { trs } from '../constants/defaultData';
+
 /*Components*/
 import NeoumorphicBox from '../components/NeumorphicBox';
 
@@ -30,15 +33,13 @@ const windowWidth = Dimensions.get("window").width
 
 export default function PaymentsScreen() {
 
-    LogBox.ignoreLogs
-        (['Warning: The provided value \'moz',
-            'Warning: The provided value \'ms-stream'
-        ])
-
+    const dispatch = useDispatch()
     const navigation = useNavigation()
-    const { theme, setTheme } = useTheme()
 
+    //schemes / UI
+    const [scrollEnabled, setScrollEnabled] = useState(true) //enable after using nested scrollView
     const [textInputColor, setTextInputColor] = useState(Colors.light.textInputColor)
+    const { theme, setTheme } = useTheme()
     useEffect(() => {
         if (theme == 'light') {
             setTextInputColor(Colors.light.textInputColor)
@@ -47,19 +48,17 @@ export default function PaymentsScreen() {
         }
     }, [theme])
 
-    const dispatch = useDispatch()
 
-    const [scrollEnabled, setScrollEnabled] = useState(true)
-
+    //redux users
     const users = useSelector(selectAllUsers)
+
+    //web3 
     const connector = useWalletConnect()
-
-    const [metamaskConnected, setMetamaskConnected] = useState(false)
-
+    const [destinationAccount, setDestinationAccount] = useState('0x0000000000000000000000000000000000000000')
+    const [trxValue, setTrxValue] = useState<any>(0.25)
 
     const connectWallet = React.useCallback(() => {
         setScrollEnabled(true)
-
         return connector.connect();
     }, [connector]);
 
@@ -83,23 +82,23 @@ export default function PaymentsScreen() {
         await provider.enable()
         const web3 = new Web3(provider)
 
-        const accounts = await web3.eth.getAccounts();
-        console.log("acc:",accounts[0])
-      
+        const accounts = await web3.eth.getAccounts();//geting user account address 
+
+
+        let hexValue = web3.utils.toWei(trxValue.toString())
         const tx = {
             from: accounts[0], // must match user's active address.
-            to: '0x0000000000000000000000000000000000000000',       
+            to: destinationAccount,
             gas: '0x2710', // customizable by user during MetaMask confirmation.
             gasPrice: '0x09184e72a000', // customizable by user during MetaMask confirmation.
-            value: '0x00', // Only required to send ether to the recipient from the initiating external account.
+            value: hexValue, // Only required to send ether to the recipient from the initiating external account.
             data:
-              '0x7f7465737432000000000000000000000000000000000000000000000000000000600057', // Optional, but used for defining smart contract creation and interaction.        
-            }
-                 
-          const txHash = await web3.eth.sendTransaction(tx).catch((e)=>{
-              console.log(e)
-          })
-        
+                '0x7f7465737432000000000000000000000000000000000000000000000000000000600057', // Optional, but used for defining smart contract creation and interaction.        
+        }
+
+        const txHash = await web3.eth.sendTransaction(tx).catch((e) => {
+            console.log(e)
+        })
     }
 
     const renderUsers: ListRenderItem<any> = ({ item, index }) => {
@@ -125,42 +124,10 @@ export default function PaymentsScreen() {
 
                 }
             </View>
-
         )
     }
 
-    const trs = [
-        {
-            id: '#asdfasaskiw92',
-            icon: 'spotify',
-            name: 'Spotify',
-            type: 'Entertaiment',
-            price: '5.00'
-        },
-        {
-            id: '#asd2314231rerfa2',
-            icon: 'shopify',
-            name: 'Shopify',
-            type: 'Food',
-            price: '25.00'
-        },
-        {
-            id: '#asd23142dsfdsfa2',
-            icon: 'hamburger',
-            name: 'Uncles Burgers',
-            type: 'Food',
-            price: '10.00'
-        },
-        {
-            id: '#asd2ggggsfasddsfa2',
-            icon: 'football-ball',
-            name: 'Fitness sharks',
-            type: 'Sport',
-            price: '10.00'
-        }
-    ]
     const renderTransactions: any = trs.map((item: any) => {
-        //console.log(item.id)
         return (
             <View key={item.id} style={{ width: windowWidth - 40, padding: 10, flexDirection: 'row', justifyContent: 'space-evenly' }}>
 
@@ -229,6 +196,8 @@ export default function PaymentsScreen() {
                                                 style={{ ...styles.textInput }}
                                                 placeholder={"Place address here"}
                                                 placeholderTextColor={'#9f9f9f'}
+                                                onChangeText={setDestinationAccount}
+                                                value={shortenAddress(destinationAccount)}
                                             />
                                         </View>
                                     </NeoumorphicBox>
@@ -250,9 +219,15 @@ export default function PaymentsScreen() {
                                         </View>
                                         <View>
                                             <Text style={styles.h3Title}>Type in amount</Text>
-                                            <View style={{ ...styles.transStyle, backgroundColor: textInputColor, alignItems: 'flex-start', justifyContent: 'center' }}>
-                                                <Text style={{ color: Colors.headerTextColor }}>0.25 eth</Text>
-                                            </View>
+                                            <TextInput
+                                                style={{ ...styles.transStyle, backgroundColor: textInputColor }}
+                                                placeholder={"e.g 0.25"}
+                                                keyboardType={'numeric'}
+                                                placeholderTextColor={'#9f9f9f'}
+                                                onChangeText={setTrxValue}
+                                                value={trxValue}
+                                                
+                                            />
                                         </View>
                                     </View>
                                 </NeoumorphicBox>
