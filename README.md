@@ -67,8 +67,13 @@ Payments screen : connect crypto wallet
 <p align="center">
     <img src="https://user-images.githubusercontent.com/62243649/163737063-08626955-7ffd-4b7c-a647-2e9de0dbb4c3.png" width="600" height="1200">
 </p>
+
+Transactions
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/62243649/163737059-ea0ad7e1-48d9-4ec0-9547-c24efed135fe.png" width="600" height="1200">
+    <img src="https://user-images.githubusercontent.com/62243649/164912457-3c62eb51-f489-4874-901b-28247be1ad65.png" width="600" height="1200">
+</p>
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/62243649/164912461-6155daac-cdce-421e-b928-bc3ba8ce2ff4.png" width="600" height="1200">
 </p>
 
 
