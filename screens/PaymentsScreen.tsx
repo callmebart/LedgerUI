@@ -28,11 +28,14 @@ import { useWalletConnect } from '@walletconnect/react-native-dapp';
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3 from 'web3';
 
+/*Stripe*/
+import { CardField,useStripe } from '@stripe/stripe-react-native';
 
 const windowWidth = Dimensions.get("window").width
 
 export default function PaymentsScreen() {
 
+    const { confirmPayment } = useStripe();
     const dispatch = useDispatch()
     const navigation = useNavigation()
 
@@ -84,21 +87,26 @@ export default function PaymentsScreen() {
 
         const accounts = await web3.eth.getAccounts();//geting user account address 
 
-
+        const selectedAccount = 0
         let hexValue = web3.utils.toWei(trxValue.toString())
         const tx = {
-            from: accounts[0], // must match user's active address.
+            from: accounts[selectedAccount], 
             to: destinationAccount,
-            gas: '0x2710', // customizable by user during MetaMask confirmation.
-            gasPrice: '0x09184e72a000', // customizable by user during MetaMask confirmation.
-            value: hexValue, // Only required to send ether to the recipient from the initiating external account.
+            gas: '0x2710', 
+            gasPrice: '0x09184e72a000', 
+            value: hexValue, 
             data:
-                '0x7f7465737432000000000000000000000000000000000000000000000000000000600057', // Optional, but used for defining smart contract creation and interaction.        
+                '0x7f7465737432000000000000000000000000000000000000000000000000000000600057', 
         }
 
         const txHash = await web3.eth.sendTransaction(tx).catch((e) => {
             console.log(e)
         })
+    }
+
+    
+    const scanQRCode = () =>{
+       
     }
 
     const renderUsers: ListRenderItem<any> = ({ item, index }) => {
@@ -184,7 +192,7 @@ export default function PaymentsScreen() {
                             <View style={{ marginLeft: 20, marginTop: 20, flexDirection: 'row' }}>
                                 <View style={{ flex: 1.1 }}>
                                     <NeoumorphicBox>
-                                        <TouchableOpacity style={{ width: 90, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+                                        <TouchableOpacity onPress={scanQRCode} style={{ width: 90, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
                                             <MaterialIcons name="qr-code-scanner" size={30} color="#9f9f9f" />
                                         </TouchableOpacity>
                                     </NeoumorphicBox>

@@ -20,6 +20,8 @@ import Card from '../components/Card';
 import { useSelector, useDispatch } from 'react-redux';
 import { cardAdded } from '../features/cards/cardsSlice';
 
+
+
 const windowWidth = Dimensions.get("window").width
 
 export default function AddNewCardScreen() {

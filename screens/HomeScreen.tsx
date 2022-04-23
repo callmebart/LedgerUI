@@ -31,9 +31,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectCardById } from '../features/cards/cardsSlice';
 import { RootState } from '../features/store';
 
+
+
 const windowWidth = Dimensions.get('window').width;
 
 export default function HomeScreen() {
+ 
   const navigation = useNavigation();
 
   //TODO: get selectedcardId from store

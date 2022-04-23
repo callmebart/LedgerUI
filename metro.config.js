@@ -13,6 +13,7 @@ module.exports = {
       path: require.resolve('path-browserify'),
       stream: require.resolve('readable-stream'),
       vm: require.resolve('vm-browserify'),
+      stripe:require.resolve('@stripe/stripe-react-native')
     },
   },
 };
