@@ -36,6 +36,7 @@ const windowWidth = Dimensions.get("window").width
 export default function PaymentsScreen() {
 
     const { confirmPayment } = useStripe();
+    
     const dispatch = useDispatch()
     const navigation = useNavigation()
 
