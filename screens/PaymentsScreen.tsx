@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, FlatList, ListRenderItem, Image, TextInput, ScrollView, LogBox, Touchable } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, FlatList, ListRenderItem,KeyboardAvoidingView, Image, TextInput,ScrollView, Alert, Touchable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -29,14 +29,17 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3 from 'web3';
 
 /*Stripe*/
-import { CardField,useStripe } from '@stripe/stripe-react-native';
+import { CardField, useStripe } from '@stripe/stripe-react-native';
+import { StripeProvider as _StripeProvider } from '@stripe/stripe-react-native';
+import type { Props as StripeProviderProps } from '@stripe/stripe-react-native/lib/typescript/src/components/StripeProvider';
+const StripeProvider = _StripeProvider as React.FC<StripeProviderProps>;
 
 const windowWidth = Dimensions.get("window").width
 
 export default function PaymentsScreen() {
 
-    const { confirmPayment } = useStripe();
-    
+    const stripe = useStripe()
+
     const dispatch = useDispatch()
     const navigation = useNavigation()
 
@@ -91,13 +94,13 @@ export default function PaymentsScreen() {
         const selectedAccount = 0
         let hexValue = web3.utils.toWei(trxValue.toString())
         const tx = {
-            from: accounts[selectedAccount], 
+            from: accounts[selectedAccount],
             to: destinationAccount,
-            gas: '0x2710', 
-            gasPrice: '0x09184e72a000', 
-            value: hexValue, 
+            gas: '0x2710',
+            gasPrice: '0x09184e72a000',
+            value: hexValue,
             data:
-                '0x7f7465737432000000000000000000000000000000000000000000000000000000600057', 
+                '0x7f7465737432000000000000000000000000000000000000000000000000000000600057',
         }
 
         const txHash = await web3.eth.sendTransaction(tx).catch((e) => {
@@ -105,9 +108,54 @@ export default function PaymentsScreen() {
         })
     }
 
-    
-    const scanQRCode = () =>{
-       
+
+    const scanQRCode = () => {
+
+    }
+
+    const sendTransactionUsingStripe = async (userId: number) => {
+        try {
+            //sending req
+            const res = await fetch('http://192.168.1.9:3000/pay', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: userId
+                })
+            })
+
+            const data = await res.json()
+            if (!res.ok) return Alert.alert(data.message)
+            const clientSecret = data.clientSecret
+            const initSheet = await stripe.initPaymentSheet({
+                paymentIntentClientSecret: clientSecret,
+                googlePay:false,
+                merchantDisplayName: 'Some dumb name ant it works',
+            })
+            if (initSheet.error) return Alert.alert(initSheet.error.message)
+            const presentSheet = await stripe.presentPaymentSheet();
+            if (presentSheet.error) return Alert.alert(presentSheet.error.message)
+            Alert.alert(
+                "Payment complete",
+                '',
+                [
+                    { text: "Ok", onPress: () => console.log("OK Pressed") }
+                ]
+            )
+
+        } catch (error) {
+            console.log('err')
+            Alert.alert(
+                "Something went wrong",
+                "Please try again",
+                [
+                    { text: "Ok", onPress: () => console.log("OK Pressed") }
+                ]
+            )
+        }
     }
 
     const renderUsers: ListRenderItem<any> = ({ item, index }) => {
@@ -124,7 +172,7 @@ export default function PaymentsScreen() {
 
                     : <View style={{ width: 120, height: 80, justifyContent: 'center', alignItems: 'center' }}>
                         <NeoumorphicBox>
-                            <TouchableOpacity style={{ width: 90, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+                            <TouchableOpacity onPress={() => sendTransactionUsingStripe(item.userId)} style={{ width: 90, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
                                 <Image source={item.profileImage} style={{ width: 45, height: 45, borderRadius: 45 / 2, opacity: 0.7 }} />
                                 <Text style={{ fontSize: 12, color: '#9f9f9f', opacity: 0.7 }}>{item.userName}</Text>
                             </TouchableOpacity>
@@ -158,146 +206,155 @@ export default function PaymentsScreen() {
     })
 
     return (
-        <ScrollView style={[themeMode[theme]]} showsVerticalScrollIndicator={false} scrollEnabled={scrollEnabled}>
-            <View style={styles.header}>
-                <NeoumorphicBox>
-                    <View style={{ width: windowWidth - 40, height: 70, borderRadius: 20, justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={styles.title}>Payments</Text>
-                        <TouchableOpacity style={{ width: 100, height: 70, zIndex: 2, justifyContent: 'center', alignItems: 'center' }}
-                            onPress={() => navigation.goBack()}
-                        >
-                            <MaterialIcons name="keyboard-arrow-down" size={40} color={Colors.headerTextColor} style={{
-                                transform: [{
-                                    rotateZ: `${90}deg`
-                                }]
-                            }} />
-                        </TouchableOpacity>
-                    </View>
-                </NeoumorphicBox>
-            </View>
-            <View style={styles.content}>
-                <View style={{ marginTop: -15 }}>
-                    <Text style={styles.h2Title}>Send money to</Text>
-                    <FlatList
-                        data={users}
-                        renderItem={renderUsers}
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        keyExtractor={(item, index) => 'key' + index}
-                    />
+        <StripeProvider publishableKey='pk_test_51KsvHxKN61cAKJBTApeQMR4uTYw23NUZw0nLkCSDiRtUOP7ekZKRmxm6Lp81HZmYdfKqoeGRBzNe3DqcegC3WJZh00pnlTomAq'>
+           <KeyboardAvoidingView
+                    behavior={"padding"}
+                    style={{ flex: 1.4 }}
+                    keyboardVerticalOffset={170}
+                >
+            <ScrollView style={[themeMode[theme]]} showsVerticalScrollIndicator={false} scrollEnabled={scrollEnabled}>
+                <View style={styles.header}>
+                    <NeoumorphicBox>
+                        <View style={{ width: windowWidth - 40, height: 70, borderRadius: 20, justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={styles.title}>Payments</Text>
+                            <TouchableOpacity style={{ width: 100, height: 70, zIndex: 2, justifyContent: 'center', alignItems: 'center' }}
+                                onPress={() => navigation.goBack()}
+                            >
+                                <MaterialIcons name="keyboard-arrow-down" size={40} color={Colors.headerTextColor} style={{
+                                    transform: [{
+                                        rotateZ: `${90}deg`
+                                    }]
+                                }} />
+                            </TouchableOpacity>
+                        </View>
+                    </NeoumorphicBox>
                 </View>
-                <View style={{ justifyContent: 'space-between', marginTop: -10 }}>
-                    <Text style={styles.h2Title}>Send Cryptocurrencies</Text>
-                    {connector.connected ?
-                        <View>
-                            <View style={{ marginLeft: 20, marginTop: 20, flexDirection: 'row' }}>
-                                <View style={{ flex: 1.1 }}>
+                <View style={styles.content}>
+                    <View style={{ marginTop: -15 }}>
+                        <Text style={styles.h2Title}>Send money to</Text>
+                        <FlatList
+                            data={users}
+                            renderItem={renderUsers}
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            keyExtractor={(item, index) => 'key' + index}
+                        />
+                    </View>
+
+                    <View style={{ justifyContent: 'space-between', marginTop: -10 }}>
+                        <Text style={styles.h2Title}>Send Cryptocurrencies</Text>
+                        {connector.connected ?
+                            <View>
+                                <View style={{ marginLeft: 20, marginTop: 20, flexDirection: 'row' }}>
+                                    <View style={{ flex: 1.1 }}>
+                                        <NeoumorphicBox>
+                                            <TouchableOpacity onPress={scanQRCode} style={{ width: 90, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+                                                <MaterialIcons name="qr-code-scanner" size={30} color="#9f9f9f" />
+                                            </TouchableOpacity>
+                                        </NeoumorphicBox>
+                                    </View>
+                                    <View style={{ flex: 2 }}>
+                                        <NeoumorphicBox>
+                                            <View style={{ width: 200, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+                                                <TextInput
+                                                    style={{ ...styles.textInput }}
+                                                    placeholder={"Place address here"}
+                                                    placeholderTextColor={'#9f9f9f'}
+                                                    onChangeText={setDestinationAccount}
+                                                    value={shortenAddress(destinationAccount)}
+                                                />
+                                            </View>
+                                        </NeoumorphicBox>
+                                    </View>
+
+                                </View>
+                                <View style={{ justifyContent: 'center', marginLeft: 20, marginTop: 65 }}>
                                     <NeoumorphicBox>
-                                        <TouchableOpacity onPress={scanQRCode} style={{ width: 90, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
-                                            <MaterialIcons name="qr-code-scanner" size={30} color="#9f9f9f" />
+                                        <View style={{ width: windowWidth - 40, height: 180, borderRadius: 20, }}>
+                                            <View >
+                                                <Text style={styles.h3Title}>Your address: {shortenAddress(connector.accounts[0])}</Text>
+                                            </View>
+                                            <View>
+                                                <Text style={styles.h3Title}>Select asset</Text>
+                                                <View style={{ ...styles.transStyle, backgroundColor: textInputColor, justifyContent: 'space-between', flexDirection: 'row' }}>
+                                                    <Text style={{ color: Colors.headerTextColor, marginTop: 5 }}>Ethereum</Text>
+                                                    <MaterialIcons name="keyboard-arrow-down" size={30} color={Colors.headerTextColor} style={{ marginRight: 10 }} />
+                                                </View>
+                                            </View>
+                                            <View>
+                                                <Text style={styles.h3Title}>Type in amount</Text>
+                                                <TextInput
+                                                    style={{ ...styles.transStyle, backgroundColor: textInputColor }}
+                                                    placeholder={"e.g 0.25"}
+                                                    keyboardType={'numeric'}
+                                                    placeholderTextColor={'#9f9f9f'}
+                                                    onChangeText={setTrxValue}
+                                                    value={trxValue}
+
+                                                />
+                                            </View>
+                                        </View>
+                                    </NeoumorphicBox>
+                                </View>
+
+                                <View style={{ marginLeft: 20, marginTop: 60 }}>
+                                    <NeoumorphicBox>
+                                        <TouchableOpacity onPress={sendTransaction} style={{ width: windowWidth - 40, height: 50, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+                                            <View style={{ flexDirection: 'row', opacity: 0.6, width: windowWidth / 2.5, justifyContent: 'space-evenly', alignItems: 'center' }}>
+                                                <MaterialIcons name="transfer-within-a-station" size={24} color="#ff8800" />
+                                                <Text style={{ color: '#9f9f9f', fontSize: 13 }}>SEND TRANSACTION</Text>
+                                            </View>
                                         </TouchableOpacity>
                                     </NeoumorphicBox>
                                 </View>
-                                <View style={{ flex: 2 }}>
+                                <View style={{ marginLeft: 20, marginTop: 60, flexDirection: 'row', width: windowWidth }}>
+
                                     <NeoumorphicBox>
-                                        <View style={{ width: 200, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
-                                            <TextInput
-                                                style={{ ...styles.textInput }}
-                                                placeholder={"Place address here"}
-                                                placeholderTextColor={'#9f9f9f'}
-                                                onChangeText={setDestinationAccount}
-                                                value={shortenAddress(destinationAccount)}
-                                            />
-                                        </View>
+                                        <TouchableOpacity onPress={killSession} style={{ width: windowWidth - 40, height: 50, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+                                            <View style={{ flexDirection: 'row', opacity: 0.6, width: windowWidth / 2.5, justifyContent: 'space-evenly' }}>
+                                                <FontAwesome5 name="book-dead" size={20} color="#ff8800" />
+                                                <Text style={{ color: '#9f9f9f', fontSize: 13 }}>KILL SESSION</Text>
+                                            </View>
+                                        </TouchableOpacity>
                                     </NeoumorphicBox>
+
+
                                 </View>
 
-                            </View>
-                            <View style={{ justifyContent: 'center', marginLeft: 20, marginTop: 65 }}>
-                                <NeoumorphicBox>
-                                    <View style={{ width: windowWidth - 40, height: 180, borderRadius: 20, }}>
-                                        <View >
-                                            <Text style={styles.h3Title}>Your address: {shortenAddress(connector.accounts[0])}</Text>
-                                        </View>
-                                        <View>
-                                            <Text style={styles.h3Title}>Select asset</Text>
-                                            <View style={{ ...styles.transStyle, backgroundColor: textInputColor, justifyContent: 'space-between', flexDirection: 'row' }}>
-                                                <Text style={{ color: Colors.headerTextColor, marginTop: 5 }}>Ethereum</Text>
-                                                <MaterialIcons name="keyboard-arrow-down" size={30} color={Colors.headerTextColor} style={{ marginRight: 10 }} />
-                                            </View>
-                                        </View>
-                                        <View>
-                                            <Text style={styles.h3Title}>Type in amount</Text>
-                                            <TextInput
-                                                style={{ ...styles.transStyle, backgroundColor: textInputColor }}
-                                                placeholder={"e.g 0.25"}
-                                                keyboardType={'numeric'}
-                                                placeholderTextColor={'#9f9f9f'}
-                                                onChangeText={setTrxValue}
-                                                value={trxValue}
-                                                
-                                            />
-                                        </View>
-                                    </View>
-                                </NeoumorphicBox>
-                            </View>
 
-                            <View style={{ marginLeft: 20, marginTop: 60 }}>
+
+                            </View>
+                            :
+                            <View style={{ marginLeft: 20, marginTop: 20, }}>
                                 <NeoumorphicBox>
-                                    <TouchableOpacity onPress={sendTransaction} style={{ width: windowWidth - 40, height: 50, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
-                                        <View style={{ flexDirection: 'row', opacity: 0.6, width: windowWidth / 2.5, justifyContent: 'space-evenly', alignItems: 'center' }}>
-                                            <MaterialIcons name="transfer-within-a-station" size={24} color="#ff8800" />
-                                            <Text style={{ color: '#9f9f9f', fontSize: 13 }}>SEND TRANSACTION</Text>
-                                        </View>
+                                    <TouchableOpacity onPress={connectWallet} style={{ width: windowWidth - 40, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
+                                        <Image source={require('../assets/images/metamask.png')} style={{ width: windowWidth / 2, height: 30, opacity: 0.6 }} />
                                     </TouchableOpacity>
                                 </NeoumorphicBox>
                             </View>
-                            <View style={{ marginLeft: 20, marginTop: 60, flexDirection: 'row', width: windowWidth }}>
 
-                                <NeoumorphicBox>
-                                    <TouchableOpacity onPress={killSession} style={{ width: windowWidth - 40, height: 50, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
-                                        <View style={{ flexDirection: 'row', opacity: 0.6, width: windowWidth / 2.5, justifyContent: 'space-evenly' }}>
-                                            <FontAwesome5 name="book-dead" size={20} color="#ff8800" />
-                                            <Text style={{ color: '#9f9f9f', fontSize: 13 }}>KILL SESSION</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                </NeoumorphicBox>
+                        }
+                    </View>
+                    <View style={{ marginTop: 60 }}>
+                        <Text style={styles.h2Title}>Recent Transactions</Text>
+                        <View style={{ justifyContent: 'center', marginLeft: 20, marginTop: 20 }}>
 
-
-                            </View>
-
-
-
-                        </View>
-                        :
-                        <View style={{ marginLeft: 20, marginTop: 20, }}>
                             <NeoumorphicBox>
-                                <TouchableOpacity onPress={connectWallet} style={{ width: windowWidth - 40, height: 90, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
-                                    <Image source={require('../assets/images/metamask.png')} style={{ width: windowWidth / 2, height: 30, opacity: 0.6 }} />
-                                </TouchableOpacity>
+                                <ScrollView style={{ width: windowWidth - 40, height: 230, borderRadius: 20, }}
+                                    onTouchStart={(ev) => setScrollEnabled(false)}
+                                    onMomentumScrollEnd={(e) => setScrollEnabled(true)}
+                                    onScrollEndDrag={(e) => setScrollEnabled(true)}
+                                >
+                                    {renderTransactions}
+                                </ScrollView>
                             </NeoumorphicBox>
                         </View>
-
-                    }
-                </View>
-                <View style={{ marginTop: 60 }}>
-                    <Text style={styles.h2Title}>Recent Transactions</Text>
-                    <View style={{ justifyContent: 'center', marginLeft: 20, marginTop: 20 }}>
-
-                        <NeoumorphicBox>
-                            <ScrollView style={{ width: windowWidth - 40, height: 230, borderRadius: 20, }}
-                                onTouchStart={(ev) => setScrollEnabled(false)}
-                                onMomentumScrollEnd={(e) => setScrollEnabled(true)}
-                                onScrollEndDrag={(e) => setScrollEnabled(true)}
-                            >
-                                {renderTransactions}
-                            </ScrollView>
-                        </NeoumorphicBox>
                     </View>
                 </View>
-            </View>
-            <View style={{ width: windowWidth - 40, height: 50, marginTop: 10 }}></View>
-        </ScrollView>
+                <View style={{ width: windowWidth - 40, height: 50, marginTop: 10 }}></View>
+            </ScrollView>
+            </KeyboardAvoidingView>
+        </StripeProvider>
     )
 }
 
