@@ -14,16 +14,7 @@ import Navigation from './navigation/Navigation';
 /*REDUX TOOLKIT*/
 import { Provider } from 'react-redux';
 import store from './features/store';
-
-
-
-
 export default function App() {
-
-  LogBox.ignoreLogs
-       (['Warning: The provided value \'moz', 
-         'Warning: The provided value \'ms-stream'
-       ])
 
   const isLoadingComplete = useCachedResources();
   const setNavigationBarColor = async () => {

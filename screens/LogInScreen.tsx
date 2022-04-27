@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 /*components*/
 import ButtonNeu from '../components/ButtonNeu';
 /*Constants */
 import Colors from '../constants/Colors'
+import { useEffect } from 'react';
 
 export default function LogInScreen() {
   const navigation = useNavigation();

@@ -10,8 +10,8 @@ const { default: AsyncStorage } = require('@react-native-async-storage/async-sto
 const { withWalletConnect } = require('@walletconnect/react-native-dapp');
 
 registerRootComponent(withWalletConnect(App, {
-    redirectUrl: Platform.OS === 'web' ? window.location.origin : `${scheme}://`,
-    storageOptions: {
-      asyncStorage: AsyncStorage,
-    },
-  }));
+  redirectUrl: Platform.OS === 'web' ? window.location.origin : `${scheme}://`,
+  storageOptions: {
+    asyncStorage: AsyncStorage,
+  },
+}));
